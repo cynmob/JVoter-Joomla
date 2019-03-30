@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_jvoter</name>
+    <creationDate>March 2019</creationDate>    
+    <author>ObeyTheBeagle Team</author>
+    <authorEmail>support@obeythebeagle.com</authorEmail>
+    <authorUrl>https://www.obeythebeagle.com</authorUrl>
+    <copyright>Copyright (C) 2019 JVoter. All rights reserved.</copyright>
+    <license>GNU GPL v3 or later</license>
+    <version>1.0.0</version>
+    <description>
+    <![CDATA[
+    <div class="alert alert-info text-left">
+    	<h4 class="alert-heading">JVoter</h4>
+     	<div class="alert-message">A flexible program for voting contests of all sorts. Raise money by charging a fee to vote, or use the free voting options. Customize cost per vote, daily voting, max votes, max entries, and more.</div>
+    </div>
+    ]]>
+    </description>      
+    <scriptfile>script.jvoter.php</scriptfile>
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.sql</file>
+        </sql>
+    </install>
+    <update> <!-- Runs on update -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/update.sql</file>
+        </sql>
+    </update>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+ 	
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>controller.php</filename>
+        <filename>jvoter.php</filename>        
+        <filename>router.php</filename>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>models</folder>
+        <folder>views</folder>        
+    </files>
+    <media destination="com_jvoter" folder="media">        
+        <folder>css</folder>
+        <folder>fonts</folder>       
+        <folder>images</folder>
+        <folder>js</folder>
+    </media>
+    <languages folder="site/languages">        
+			<language tag="en-GB">en-GB/en-GB.com_jvoter.ini</language>
+    </languages>
+    <administration>
+        <menu>COM_JVOTER</menu>
+        <submenu>         	
+        	<menu link="option=com_jvoter&amp;view=dashboard" view="dashboard" alt="JVoter/Dashboard">COM_JVOTER_TITLE_DASHBOARD</menu>
+        	<menu link="option=com_categories&amp;view=categories&amp;extension=com_jvoter" view="categories" alt="Jdonate/Categories">COM_JVOTER_TITLE_CATEGORIES</menu>
+        	<menu link="option=com_jvoter&amp;view=contests" view="contests" alt="Jdonate/Contests">COM_JVOTER_TITLE_CONTESTS</menu>
+        	<menu link="option=com_jvoter&amp;view=entries" view="entries" alt="Jdonate/Donations">COM_JVOTER_TITLE_ENTRIES</menu>
+        	<menu link="option=com_jvoter&amp;view=plans" view="plans" alt="Jdonate/Plans">COM_JVOTER_TITLE_PLANS</menu>	
+        	<menu link="option=com_jvoter&amp;view=features" view="features" alt="Jdonate/Features">COM_JVOTER_TITLE_FEATURES</menu>					
+        </submenu>
+        <files folder="admin">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>jvoter.php</filename>
+            <folder>controllers</folder>          
+            <folder>helpers</folder>
+            <folder>layouts</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="admin/languages">            
+			<language tag="en-GB">en-GB/en-GB.com_jvoter.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_jvoter.sys.ini</language>
+        </languages>
+    </administration>    
+    <config>
+        <fields name="params">
+            <fieldset name="component">
+                <field name="save_history" default="0" />
+            </fieldset>
+        </fields>
+    </config>
+    <plugins>
+        <plugin group="search" plugin="jvoter"/>
+    </plugins>    
+</extension>

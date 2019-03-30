@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>    
+    <fieldset
+		name="general_settings"
+		label="COM_JDONATE_CONFIG_GENERAL_SETTINGS"		
+	>    
+	
+		<field 
+			name="hidelonepaymentoption" 
+			type="radio" 
+			class="btn-group btn-group-yesno"
+			default="1"
+			label="COM_JDONATE_CONFIG_FIELD_HIDELONEPAYMENTOPTION_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_HIDELONEPAYMENTOPTION_DESC"
+			>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field >
+		
+		<field 
+			name="useppimages" 
+			type="list" 
+			default="1"
+			label="COM_JDONATE_CONFIG_FIELD_USEPPIMAGES_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_USEPPIMAGES_DESC"
+			>
+			<option value="0">COM_JDONATE_CONFIG_FIELD_USEPPIMAGES_OPT_DROPDOWN</option>
+			<option value="1">COM_JDONATE_CONFIG_FIELD_USEPPIMAGES_OPT_IMAGEONLY</option>
+			<option value="2">COM_JDONATE_CONFIG_FIELD_USEPPIMAGES_OPT_IMAGEANDTEXT</option>
+		</field>
+	    	
+      	<field
+			name="sef_advanced"
+			type="radio"
+			class="btn-group btn-group-yesno btn-group-reversed"
+			default="0"
+			label="JGLOBAL_SEF_ADVANCED_LABEL"
+			description="JGLOBAL_SEF_ADVANCED_DESC"
+			filter="integer"
+		>
+			<option value="0">JGLOBAL_SEF_ADVANCED_LEGACY</option>
+			<option value="1">JGLOBAL_SEF_ADVANCED_MODERN</option>
+		</field>
+
+		<field
+			name="sef_ids"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="0"
+			label="JGLOBAL_SEF_NOIDS_LABEL"
+			description="JGLOBAL_SEF_NOIDS_DESC"
+			showon="sef_advanced:1"
+			filter="integer">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+    </fieldset>
+		
+	<fieldset
+		name="media_settings"
+		label="COM_JDONATE_CONFIG_MEDIA_SETTINGS"
+		description="COM_JDONATE_CONFIG_MEDIA_SETTINGS_DESC"
+	>
+	   <field
+			name="upload_extensions"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_LEGAL_EXTENSIONS_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_LEGAL_IMAGE_EXTENSIONS_DESC"
+			size="50"
+			default="gif,jpg,jpeg,png,GIF,JPG,JPEG,PNG"
+		/>
+
+		<field
+			name="upload_maxsize"
+			type="number"
+			label="COM_JDONATE_CONFIG_FIELD_MAXIMUM_SIZE_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_PATH_FILE_FOLDER_DESC" 
+			validate="number"
+			min="0"
+			size="50"
+			default="10"
+		/>
+		
+		<field
+			name="image_extensions"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_LEGAL_IMAGE_EXTENSIONS_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_LEGAL_IMAGE_EXTENSIONS_DESC"
+			size="50"
+			default="bmp,gif,jpg,png"			
+		/>
+		
+		<field
+			name="ignore_extensions"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_IGNORED_EXTENSIONS_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_IGNORED_EXTENSIONS_DESC" 
+			size="50"
+		/>
+		
+		<field
+			name="upload_mime"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_LEGAL_MIME_TYPES_LABEL"
+			description="COM_JDONATE_CONFIG_FIELD_LEGAL_MIME_TYPES_DESC"
+			size="50"
+			default="image/jpeg,image/gif,image/png"			
+		/>
+    </fieldset>
+       
+    <fieldset
+		name="payment_settings"
+		label="COM_JDONATE_CONFIG_PAYMENT_SETTINGS"
+		description="COM_JDONATE_CONFIG_PAYMENT_SETTINGS_DESC"
+		addfieldpath="/administrator/components/com_jdonate/models/fields"
+	>  
+	
+	   <field 
+	   		name="gateways" 
+	   		type="gateway" 
+	   		default="paypal"	  
+	   		multiple="true"
+	   		label="COM_JDONATE_CONFIG_FIELD_PAYMENT_GATEWAY_LABEL" 
+	   		description="COM_JDONATE_CONFIG_FIELD_PAYMENT_GATEWAY_DESC" 
+	   />
+	   
+	   <field
+			name="currency"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_CURRENCY_LABEL"			
+			size="50"
+			default="USD"			
+		/>
+		
+		<field
+			name="currency_symbol"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_CURRENCY_SYMBOL_LABEL"			
+			size="50"
+			default="$"			
+		/>
+		
+		<field
+			name="currency_format"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_AMOUNT_DISPLAY_FORMAT_LABEL"		
+			description="COM_JDONATE_CONFIG_FIELD_AMOUNT_DISPLAY_FORMAT_DESC"	
+			size="50"
+			default="[SYMBOL][AMOUNT]"			
+		/>
+		
+		<field
+			name="thousands_sep"
+			type="text"
+			label="COM_JDONATE_CONFIG_FIELD_THOUSAND_SEPARATOR_LABEL"		
+			description="COM_JDONATE_CONFIG_FIELD_THOUSAND_SEPARATOR_DESC"	
+			size="50"
+			default=","			
+		/>
+		
+    </fieldset>
+	
+    <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+        <field name="rules" type="rules" component="com_jdonate" class="inputbox" filter="rules" validate="rules" label="JCONFIG_PERMISSIONS_LABEL" section="component" />
+	</fieldset>
+</config>

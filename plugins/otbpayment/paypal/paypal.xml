@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.3.0" type="plugin" group="otbpayment" method="upgrade">
+	<name>PLG_OTBPAYMENT_PAYPAL</name>
+	<author>Jdonate Team</author>
+    <authorEmail>support@jdonate.com</authorEmail>
+    <authorUrl>http://www.jdonate.com</authorUrl>
+	<copyright>Copyright (c) 2018 Jdonate. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<creationDate>June 2018</creationDate>
+	<version>v1.0.0</version>
+	<description>PLG_JDPAYMENT_PAYPAL_DESCRIPTION</description>
+
+	<files>
+		<filename plugin="paypal">paypal.php</filename>
+		<folder>paypal</folder>
+	</files>
+
+	<languages folder="languages">
+		<language tag="en-GB">en-GB/en-GB.plg_jdpayment_paypal.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_jdpayment_paypal.sys.ini</language>
+	</languages>
+
+	<config
+		addfieldpath="administrator/components/com_jdonate/models/fields">
+		<fields name="params">
+			<fieldset name="basic">
+			
+				<field 
+					name="title" 
+					type="text" 
+					size="50" 
+					default=""
+					label="PLG_JDPAYMENT_PAYPAL_TITLE_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_TITLE_DESC"
+				/>
+				<field 
+					name="ppimage" 
+					type="text" 
+					size="50" 
+					default=""
+					label="PLG_JDPAYMENT_PAYPAL_PPIMAGE_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_PPIMAGE_DESC"
+				/>
+								
+				<field 
+					type="spacer" 
+				/>
+				
+				<field 
+					name="sandbox" 
+					type="radio" 
+					default="0"
+					label="PLG_JDPAYMENT_PAYPAL_SANDBOX_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_SANDBOX_DESC" 
+					class="btn-group btn-group-yesno"
+					>
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				
+				<field 
+					name="sandbox_merchant" 
+					type="text" 
+					size="50"
+					default="" 
+					label="PLG_JDPAYMENT_PAYPAL_SANDBOX_MERCHANT_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_SANDBOX_MERCHANT_LABEL"
+				/>
+				
+				<field 
+					type="spacer"
+				/>
+				
+				<field 
+					name="debug" 
+					type="radio" 
+					default="0"
+					label="PLG_JDPAYMENT_PAYPAL_DEBUG_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_DEBUG_DESC" 
+					class="btn-group btn-group-yesno"
+					>
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				
+				<field 
+					type="spacer"
+				/>
+				
+				<field 
+					name="cbt" 
+					type="text" 
+					size="50" 
+					default=""
+					label="PLG_JDPAYMENT_PAYPAL_CBT_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_CBT_DESC"
+				/>
+				
+				<field 
+					name="cpp_header_image" 
+					type="text" size="50"
+					default="" 
+					label="PLG_JDPAYMENT_PAYPAL_HEADER_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_HEADER_DESC"
+				/>
+				
+				<field 
+					name="cpp_headerback_color" 
+					type="text" 
+					size="50"
+					default="" label="PLG_JDPAYMENT_PAYPAL_HEADERBACK_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_HEADERBACK_DESC"
+				/>
+				
+				<field 
+					name="cpp_headerborder_color" 
+					type="text"
+					size="50"
+					default="" 
+					label="PLG_JDPAYMENT_PAYPAL_HEADERBORDER_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_HEADERBORDER_DESC"
+				/>
+
+				<field 
+					name="protocol" 
+					type="radio" 
+					default="keep"
+					label="PLG_JDPAYMENT_PAYPAL_PROTOCOL_LABEL"
+					description="PLG_JDPAYMENT_PAYPAL_PROTOCOL_DESC"
+					>
+					<option value="keep">PLG_JDPAYMENT_PAYPAL_PROTOCOL_KEEP_LABEL</option>
+					<option value="insecure">PLG_JDPAYMENT_PAYPAL_PROTOCOL_INSECURE_LABEL</option>
+					<option value="secure">PLG_JDPAYMENT_PAYPAL_PROTOCOL_SECURE_LABEL</option>
+				</field>
+
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

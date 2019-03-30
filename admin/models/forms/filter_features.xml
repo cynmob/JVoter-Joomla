@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_JVOTER_FILTER_SEARCH_FEATURES_LABEL"
+			description="COM_JVOTER_FILTER_SEARCH_FEATURES_DESC"
+			hint="JSEARCH_FILTER"
+		/>
+		
+		<field
+			name="published"
+			type="status"
+			label="COM_JVOTER_FILTER_PUBLISHED"
+			description="COM_JVOTER_FILTER_PUBLISHED_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>	
+		
+		<field 
+        	name="type"
+            type="list"
+            label="COM_JVOTER_FEATURE_FILTER_TYPE"              
+            onchange="this.form.submit();"
+        >
+            <option value="">COM_JVOTER_FEATURE_FILTER_TYPE_OPT</option>
+            <option value="boolean">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_BOOLEAN</option>
+      		<option value="integer">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_INTEGER</option>
+      		<option value="text">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_TEXT</option>      	
+        </field>	
+		
+	</fields>
+
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="COM_JVOTER_LIST_FULL_ORDERING"
+			description="COM_JVOTER_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default="a.id DESC"
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="f.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+			<option value="f.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+			<option value="f.state ASC">JSTATUS_ASC</option>
+			<option value="f.state DESC">JSTATUS_DESC</option>			
+			<option value="f.label ASC">COM_JVOTER_LABEL_ASC</option>
+			<option value="f.label DESC">COM_JVOTER_LABEL_DESC</option>	
+			<option value="f.namekey ASC">COM_JVOTER_NAMEKEY_ASC</option>
+			<option value="f.namekey DESC">COM_JVOTER_NAMEKEY_DESC</option>				
+			<option value="f.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="f.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+
+		<field
+			name="limit"
+			type="limitbox"
+			label="COM_JVOTER_LIST_LIMIT"
+			description="COM_JVOTER_LIST_LIMIT_DESC"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

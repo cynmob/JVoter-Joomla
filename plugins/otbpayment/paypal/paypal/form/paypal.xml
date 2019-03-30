@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="params">
+		<fieldset 
+			name="jparams"
+			label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
+			>
+			
+	   		<field 
+				name="paypal_merchant" 
+				type="text" 
+				size="50" 
+				default=""
+				label="PLG_JDPAYMENT_PAYPAL_MERCHANT_LABEL"
+				description="PLG_JDPAYMENT_PAYPAL_MERCHANT_DESC"
+			/>
+
+		</fieldset>
+	</fields>
+	
+</form>

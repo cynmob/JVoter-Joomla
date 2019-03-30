@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="params">
+		<fieldset 
+			name="jparams"
+			label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
+			>
+			
+	   		<field 
+				name="stripe_private_key" 
+				type="text" 
+				size="50" 
+				default=""
+				label="PLG_JDPAYMENT_STRIPE_PRIVKEY_LABEL"
+				description="PLG_JDPAYMENT_STRIPE_PRIVKEY_DESC"
+			/>
+				
+			<field 
+				name="stripe_public_key"
+				type="text" 
+				size="50" 
+				default=""
+				label="PLG_JDPAYMENT_STRIPE_PUBKEY_LABEL"
+				description="PLG_JDPAYMENT_STRIPE_PUBKEY_DESC"
+			/>
+
+		</fieldset>
+	</fields>
+	
+</form>
