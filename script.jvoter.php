@@ -64,6 +64,7 @@ class com_JVoterInstallerScript
 		// $parent is the class calling this method
 		$this->setDefault();
 		$this->setDefaultParams();
+		//$this->setDefaultFeatures();
 	}
 
 	/**
@@ -96,6 +97,56 @@ class com_JVoterInstallerScript
 		// Get dbprefix
 		$dbprefix = $config->get('dbprefix');
 	}
+	
+	/**
+	 * Set default features
+	 * 
+	 * @return void
+	 */
+	public function setDefaultFeatures()
+	{
+	    $user = JFactory::getUser();
+	    $db = JFactory::getDbo();
+	    
+	    // Check if tag exists
+	    $sql = $db->getQuery(true)
+	       ->select($db->qn('id'))
+	       ->from($db->qn('#__jvoter_features'))
+	       ->where($db->qn('core') . ' = 1');	  
+	    $db->setQuery($sql);
+	    $features = $db->loadObjectList();
+	    
+	    try
+	    {
+	        $features = $db->loadObjectList();
+	    }
+	    catch (Exception $e)
+	    {
+	        echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />';	        
+	        return;
+	    }	    
+	  
+	    if(!$features)
+	    {
+	        $featureObj = new stdClass();
+	        $featureObj->title = 'Uncategorised';
+	        $featureObj->label = 'uncategorised';	        
+	        $featureObj->namekey = "com_jvoter";
+	        $featureObj->value = "uncategorised";
+	        $featureObj->description = '';
+	        $featureObj->state = 1;
+	        $featureObj->type = 'text';
+	        $featureObj->core = 1;
+	        $featureObj->created = $user->id;	
+	        $featureObj->access = 1;
+	        
+	        if (! $db->insertObject('#__jvoter_features', $featureObj, 'id'))
+	        {
+	            echo $db->stderr();
+	            return false;
+	        }
+	    }
+	}
 
 	/**
 	 * method to setDefault
@@ -114,7 +165,18 @@ class com_JVoterInstallerScript
 			->where($db->qn('type_title') . ' = ' . $db->q('JVoter Category'))
 			->where($db->qn('type_alias') . ' = ' . $db->q('com_jvoter.category'));
 		$db->setQuery($sql);
-		$type_id = $db->loadResult();
+		
+		try
+		{
+		    $type_id = $db->loadResult();
+		}
+		catch (Exception $e)
+		{
+		    echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />';
+		    return;
+		}
+		
+		
 		
 		// Create tag
 		$db = JFactory::getDBO();

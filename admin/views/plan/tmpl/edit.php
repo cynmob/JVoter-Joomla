@@ -20,7 +20,7 @@ $input = $app->input;
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task)
 	{
-		if (task == "feature.cancel" || document.formvalidator.isValid(document.getElementById("item-form")))
+		if (task == "plan.cancel" || document.formvalidator.isValid(document.getElementById("item-form")))
 		{
 			Joomla.submitform(task, document.getElementById("item-form"));
 		}
@@ -35,27 +35,42 @@ JFactory::getDocument()->addScriptDeclaration('
 		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JVOTER_VIEW_FIELD_FIELDSET_GENERAL', true)); ?>
 		<div class="row-fluid">
-			<div class="span9">				
-				<?php echo $this->form->renderField('type'); ?>
-				<?php echo $this->form->renderField('namekey'); ?>
-				<?php echo $this->form->renderField('label'); ?>
-				<?php echo $this->form->renderField('description'); ?>				
-				<?php echo $this->form->renderField('value'); ?>				
+			<div class="span9">
+                <h3><?php echo JText::_('COM_JVOTER_FEATURES');?></h3>
+				<fieldset class="adminform">
+					<?php echo $this->form->getInput('features'); ?>
+				</fieldset>	
+				<div class="alert alert-info">
+                	<h4 class="alert-heading"><?php echo JText::_('COM_JVOTER_COMMON_NOTE');?></h4>
+                 	<div class="alert-message"><?php echo JText::_('COM_JVOTER_FEATURE_LIST_NOTE');?></div>
+                </div>			
 			</div>
 			<div class="span3">
+				<fieldset class="form-vertical">
+					<?php echo $this->form->renderField('price'); ?>
+				</fieldset>
 				<?php $this->set('fields',
 						array(
 							array(
 								'published',
 								'state',
 								'enabled',
-							),							
-							'access',							
-							'note',
+							)	
 						)
 				); ?>
 				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
 				<?php $this->set('fields', null); ?>
+			</div>
+		</div>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>	
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'description', JText::_('JGLOBAL_DESCRIPTION', true)); ?>
+		<div class="row-fluid form-horizontal-desktop">
+			<div class="span9">
+				<fieldset class="adminform">
+					<?php echo $this->form->getInput('description'); ?>
+				</fieldset>
+			</div>
+			<div class="span3">
 			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>		

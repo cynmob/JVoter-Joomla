@@ -40,19 +40,17 @@
 			label="COM_JVOTER_LIST_FULL_ORDERING"
 			description="COM_JVOTER_LIST_FULL_ORDERING_DESC"
 			onchange="this.form.submit();"
-			default="f.id DESC"
+			default="e.id DESC"
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="f.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
-			<option value="f.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
-			<option value="f.state ASC">JSTATUS_ASC</option>
-			<option value="f.state DESC">JSTATUS_DESC</option>			
-			<option value="f.title ASC">JGLOBAL_TITLE_ASC</option>
-			<option value="f.title DESC">JGLOBAL_TITLE_DESC</option>	
-			<option value="f.namekey ASC">COM_JVOTER_NAME_ASC</option>
-			<option value="f.namekey DESC">COM_JVOTER_NAME_DESC</option>	
-			<option value="f.id ASC">JGRID_HEADING_ID_ASC</option>
-			<option value="f.id DESC">JGRID_HEADING_ID_DESC</option>
+			<option value="e.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+			<option value="e.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+			<option value="e.state ASC">JSTATUS_ASC</option>
+			<option value="e.state DESC">JSTATUS_DESC</option>			
+			<option value="e.title ASC">JGLOBAL_TITLE_ASC</option>
+			<option value="e.title DESC">JGLOBAL_TITLE_DESC</option>				
+			<option value="e.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="e.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
 
 		<field

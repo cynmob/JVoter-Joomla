@@ -61,11 +61,11 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 	<div class="form-horizontal">
 		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JVOTER_CONTEST_ABOUT')); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JVOTER_VIEW_FIELD_FIELDSET_GENERAL')); ?>
 		<div class="row-fluid">
 			<div class="span9">
-				<fieldset class="adminform">
-					<?php echo $this->form->getInput('abouttext'); ?>
+				<fieldset class="form-vertical">
+					<?php echo $this->form->renderField('abouttext'); ?>
 				</fieldset>
 			</div>
 			<div class="span3">
@@ -88,12 +88,6 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 					<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
 				</div>
 			</div>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-		<?php endif; ?>
-
-		<?php if ($this->canDo->get('core.admin')) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'editor', JText::_('COM_CONTENT_SLIDER_EDITOR_CONFIG')); ?>
-			<?php echo $this->form->renderFieldset('editorConfig'); ?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php endif; ?>
 

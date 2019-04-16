@@ -17,39 +17,6 @@ use Joomla\Utilities\ArrayHelper;
  */
 class JVoterControllerEntries extends JControllerAdmin
 {
-
-    /**
-     * Method to clone existing Entries
-     *
-     * @return void
-     */
-    public function duplicate()
-    {
-        // Check for request forgeries
-        Jsession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-        
-        // Get id(s)
-        $pks = $this->input->post->get('cid', array(), 'array');
-        
-        try
-        {
-            if(empty($pks))
-            {
-                throw new Exception(JText::_('COM_JVOTER_NO_ITEMS_SELECTED'));
-            }
-            
-            ArrayHelper::toInteger($pks);
-            $model = $this->getModel();
-            $model->duplicate($pks);
-            $this->setMessage(JText::_('COM_JVOTER_ITEMS_SUCCESS_DUPLICATED'));
-        } catch(Exception $e)
-        {
-            $this->app->enqueueMessage($e->getMessage(), 'warning');
-        }
-        
-        $this->setRedirect('index.php?option=com_jvoter&view=entries');
-    }
-
     /**
      * Proxy for getModel.
      *

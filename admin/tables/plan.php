@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 1.6
  */
-class JVoterTableFeature extends JTable
+class JVoterTablePlan extends JTable
 {
 
     /**
@@ -22,12 +22,12 @@ class JVoterTableFeature extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__jvoter_features', 'id', $db);
+        parent::__construct('#__jvoter_plans', 'id', $db);
         
         // Set the alias since the column is called state
         $this->setColumnAlias('published', 'state');
     }
-
+    
     /**
      * Method to perform sanity checks on the JTable instance properties to ensure
      * they are safe to store in the database.
@@ -36,7 +36,7 @@ class JVoterTableFeature extends JTable
      * as expected before storage.
      *
      * @return boolean True if the instance is sane and able to be stored in the database.
-     *        
+     *
      * @link https://docs.joomla.org/Special:MyLanguage/JTable/check
      * @since 3.7.0
      */
@@ -45,48 +45,10 @@ class JVoterTableFeature extends JTable
         // Check for valid name
         if(trim($this->title) == '')
         {
-            $this->setError(JText::_('COM_JVOTER_MUSTCONTAIN_A_TITLE_FEATURE'));
+            $this->setError(JText::_('COM_JVOTER_MUSTCONTAIN_A_TITLE_PLAN'));
             
             return false;
-        }
-        
-        if(empty($this->namekey))
-        {
-            $this->namekey = $this->title;
-        }
-        
-        $this->namekey = JApplicationHelper::stringURLSafe($this->namekey, $this->language);
-        
-        if(trim(str_replace('-', '', $this->namekey)) == '')
-        {
-            $this->namekey = Joomla\String\StringHelper::increment($this->namekey, 'dash');
-        }
-        
-        $this->namekey = str_replace(',', '-', $this->namekey);
-        
-        // Verify that the name is unique
-        $table = JTable::getInstance('Feature', 'JVoterTable', array(
-            'dbo' => $this->_db
-        ));
-        
-        if($table->load(array(
-            'namekey' => $this->namekey
-        )) && ($table->id != $this->id || $this->id == 0))
-        {
-            $this->setError(JText::_('COM_JVOTER_ERROR_UNIQUE_FEATURE_NAME'));
-            
-            return false;
-        }
-        
-        if(empty($this->label))
-        {
-            $this->label = $this->title;
-        }
-        
-        if(empty($this->type))
-        {
-            $this->type = 'text';
-        }
+        }      
         
         $date = JFactory::getDate();
         $user = JFactory::getUser();

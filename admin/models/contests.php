@@ -190,7 +190,7 @@ class JVoterModelContests extends JModelList
 		      ->join('LEFT', '#__users AS ua ON ua.id = jc.created_by');
 		
         // Join over the plans.
-        $query->select('p.name AS plan_name')
+        $query->select('p.title AS plan_title')
 		      ->join('LEFT', '#__jvoter_plans AS p ON p.id = jc.planid');
 		
         // Filter by access level.

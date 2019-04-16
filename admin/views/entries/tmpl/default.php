@@ -16,16 +16,16 @@ $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$ordering  = ($listOrder == 'f.ordering');
-$saveOrder = ($listOrder == 'f.ordering' && strtolower($listDirn) == 'asc');
+$ordering  = ($listOrder == 'e.ordering');
+$saveOrder = ($listOrder == 'e.ordering' && strtolower($listDirn) == 'asc');
 
 if ($saveOrder)
 {
-    $saveOrderingUrl = 'index.php?option=com_jvoter&task=features.saveOrderAjax&tmpl=component';
-    JHtml::_('sortablelist.sortable', 'featureList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+    $saveOrderingUrl = 'index.php?option=com_jvoter&task=entries.saveOrderAjax&tmpl=component';
+    JHtml::_('sortablelist.sortable', 'entryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_jvoter&view=features'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_jvoter&view=entries'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -43,11 +43,11 @@ if ($saveOrder)
 				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 			</div>
 		<?php else : ?>
-    		<table class="table table-striped" id="featureList">
+    		<table class="table table-striped" id="entryList">
     			<thead>
 					<tr>
 						<th width="1%" class="nowrap center hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', '', 'f.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+							<?php echo JHtml::_('searchtools.sort', '', 'e.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 						</th>
 						<th width="1%" class="center">
 							<?php echo JHtml::_('grid.checkall'); ?>
@@ -75,11 +75,11 @@ if ($saveOrder)
 				</tfoot>
 				<tbody>
 				<?php foreach ($this->items as $i => $item) :?>
-					<?php $ordering   = ($listOrder == 'f.ordering'); ?>
-					<?php $canEdit    = $user->authorise('core.edit', 'com_jvoter.feature.' . $item->id); ?>
+					<?php $ordering   = ($listOrder == 'e.ordering'); ?>
+					<?php $canEdit    = $user->authorise('core.edit', 'com_jvoter.entry.' . $item->id); ?>
 					<?php $canCheckin = $user->authorise('core.admin', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0; ?>
-					<?php $canEditOwn = $user->authorise('core.edit.own', 'com_jvoter.feature.' . $item->id) && $item->created_by == $userId; ?>
-					<?php $canChange  = $user->authorise('core.edit.state', 'com_jvoter.feature.' . $item->id) && $canCheckin; ?>
+					<?php $canEditOwn = $user->authorise('core.edit.own', 'com_jvoter.entry.' . $item->id) && $item->created_by == $userId; ?>
+					<?php $canChange  = $user->authorise('core.edit.state', 'com_jvoter.entry.' . $item->id) && $canCheckin; ?>
 					<tr class="row<?php echo $i % 2; ?>" item-id="<?php echo $item->id ?>">
 						<td class="order nowrap center hidden-phone">
 							<?php $iconClass = ''; ?>
@@ -100,7 +100,7 @@ if ($saveOrder)
 						</td>
 						<td class="center">
 							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'features.', $canChange, 'cb'); ?>
+								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'entries.', $canChange, 'cb'); ?>
 								<?php // Create dropdown items and render the dropdown list. ?>
 								<?php if ($canChange) : ?>
 									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'features'); ?>
@@ -139,7 +139,7 @@ if ($saveOrder)
 				<?php endforeach; ?>
 				</tbody>
 		</table>
-		<?php endif; ?>		
+		<?php endif; ?>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

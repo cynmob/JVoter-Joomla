@@ -96,10 +96,10 @@ class JVoterViewContest extends JViewLegacy
         
         // Built the actions for new and existing records.
         $canDo = $this->canDo;
-        
+                
         JToolbarHelper::title(
-            JText::_('COM_JVOTER_PAGE_' . ($checkedOut ? 'VIEW_CONTEST' : ($isNew ? 'ADD_CONTEST' : 'EDIT_CONTEST'))),
-            'pencil-2 contest-add'
+            JText::sprintf('COM_JVOTER_PAGE_' . ($checkedOut ? 'VIEW_ITEM' : ($isNew ? 'ADD_ITEM' : 'EDIT_ITEM')), JText::_('COM_JVOTER_PAGE_TITLE_CONTEST')),
+            'pencil-2 feature-add'
             );
         
         // For new records, check the create permission.

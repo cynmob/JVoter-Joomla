@@ -8,16 +8,21 @@
 			description="COM_JVOTER_FILTER_SEARCH_CONTESTS_DESC"
 			hint="JSEARCH_FILTER"
 		/>
-
-		<field
-			name="published"
-			type="status"
-			label="COM_JVOTER_FILTER_PUBLISHED"
-			description="COM_JVOTER_FILTER_PUBLISHED_DESC"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_PUBLISHED</option>
-		</field>
+		
+		<field 
+        	name="published"
+            type="list"
+            label="COM_JVOTER_FILTER_PUBLISHED"              
+            onchange="this.form.submit();"
+            default=""
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+            <option value="-2">JTRASHED</option>
+      		<option value="0">COM_JVOTER_FILTER_DISAPPROVED</option>
+      		<option value="1">COM_JVOTER_FILTER_APPROVED</option>
+      		<option value="2">JARCHIVED</option>
+      		<option value="*">JALL</option>
+        </field>
 
 		<field
 			name="category_id"
@@ -88,7 +93,7 @@
 			label="COM_JVOTER_LIST_FULL_ORDERING"
 			description="COM_JVOTER_LIST_FULL_ORDERING_DESC"
 			onchange="this.form.submit();"
-			default="a.id DESC"
+			default="jc.id DESC"
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
 			<option value="jc.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>

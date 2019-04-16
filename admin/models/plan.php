@@ -12,11 +12,11 @@ use Joomla\Utilities\ArrayHelper;
 JLoader::register('JVoterHelper', JPATH_ADMINISTRATOR . '/components/com_jvoter/helpers/jvoter.php');
 
 /**
- * Item Model for an Feature.
+ * Item Model for an Plan.
  *
  * @since  1.6
  */
-class JVoterModelFeature extends JModelAdmin
+class JVoterModelPlan extends JModelAdmin
 {
     /**
      * The prefix to use with controller messages.
@@ -32,7 +32,7 @@ class JVoterModelFeature extends JModelAdmin
      * @var    string
      * @since  3.2
      */
-    public $typeAlias = 'com_jvoter.feature'; 
+    public $typeAlias = 'com_jvoter.plan'; 
           
     /**
      * Method to test whether a record can be deleted.
@@ -52,7 +52,7 @@ class JVoterModelFeature extends JModelAdmin
                 return false;
             }
             
-            return JFactory::getUser()->authorise('core.delete', 'com_jvoter.feature.' . (int) $record->id);
+            return JFactory::getUser()->authorise('core.delete', 'com_jvoter.plan.' . (int) $record->id);
         }
         
         return false;
@@ -74,7 +74,7 @@ class JVoterModelFeature extends JModelAdmin
         // Check for existing article.
         if (!empty($record->id))
         {
-            return $user->authorise('core.edit.state', 'com_jvoter.feature.' . (int) $record->id);
+            return $user->authorise('core.edit.state', 'com_jvoter.plan.' . (int) $record->id);
         }
               
         // Default to component settings if neither article nor category known.
@@ -90,7 +90,7 @@ class JVoterModelFeature extends JModelAdmin
      *
      * @return  JTable    A database object
      */
-    public function getTable($type = 'Feature', $prefix = 'JVoterTable', $config = array())
+    public function getTable($type = 'Plan', $prefix = 'JVoterTable', $config = array())
     {
         return JTable::getInstance($type, $prefix, $config);
     }
@@ -109,7 +109,7 @@ class JVoterModelFeature extends JModelAdmin
     public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
-        $form = $this->loadForm('com_jvoter.feature', 'feature', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_jvoter.plan', 'plan', array('control' => 'jform', 'load_data' => $loadData));
         
         if (empty($form))
         {
@@ -125,16 +125,16 @@ class JVoterModelFeature extends JModelAdmin
         $id = $jinput->get('a_id', $jinput->get('id', 0));
         
         // Determine correct permissions to check.
-        if ($this->getState('feature.id'))
+        if ($this->getState('plan.id'))
         {
-            $id = $this->getState('feature.id');            
+            $id = $this->getState('plan.id');            
         }
         
         $user = JFactory::getUser();
         
         // Check for existing feature.
         // Modify the form based on Edit State access controls.
-        if ($id != 0 && (!$user->authorise('core.edit.state', 'com_jvoter.feature.' . (int) $id))
+        if ($id != 0 && (!$user->authorise('core.edit.state', 'com_jvoter.plan.' . (int) $id))
             || ($id == 0 && !$user->authorise('core.edit.state', 'com_jvoter')))
         {
             // Disable fields for display.           
@@ -161,16 +161,16 @@ class JVoterModelFeature extends JModelAdmin
     {
         // Check the session for previously entered form data.
         $app  = JFactory::getApplication();
-        $data = $app->getUserState('com_jvoter.edit.feature.data', array());
+        $data = $app->getUserState('com_jvoter.edit.plan.data', array());
         
         if (empty($data))
         {
             $data = $this->getItem();
             
             // Pre-select some filters (Status) in edit form if those have been selected in JVoter: Contests
-            if ($this->getState('feature.id') == 0)
+            if ($this->getState('plan.id') == 0)
             {
-                $filters = (array) $app->getUserState('com_jvoter.features.filter');
+                $filters = (array) $app->getUserState('com_jvoter.plans.filter');
                 $data->set(
                     'state',
                     $app->input->getInt(
@@ -182,7 +182,7 @@ class JVoterModelFeature extends JModelAdmin
         }
         
         
-        $this->preprocessData('com_jvoter.feature', $data);
+        $this->preprocessData('com_jvoter.plan', $data);
         
         return $data;
     }
@@ -231,24 +231,8 @@ class JVoterModelFeature extends JModelAdmin
      *
      * @since   3.0
      */
-    protected function preprocessForm(JForm $form, $data, $group = 'feature')
-    {        
-        $dataObject = $data;
-        
-        if (is_array($dataObject))
-        {
-            $dataObject = (object) $dataObject;
-        }
-        
-        if(isset($dataObject->type))
-        {
-            // Not allowed to change the type of an existing record
-            if ($dataObject->id)
-            {
-                $form->setFieldAttribute('type', 'readonly', 'true');
-            }            
-        }
-        
+    protected function preprocessForm(JForm $form, $data, $group = 'plan')
+    {            
         parent::preprocessForm($form, $data, $group);
     }
 }

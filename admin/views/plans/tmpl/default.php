@@ -9,7 +9,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 
 $app       = JFactory::getApplication();
@@ -17,25 +16,7 @@ $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$saveOrder = $listOrder == 'jc.ordering';
-$columns   = 10;
-
-if (strpos($listOrder, 'publish_up') !== false)
-{
-    $orderingColumn = 'publish_up';
-}
-elseif (strpos($listOrder, 'publish_down') !== false)
-{
-    $orderingColumn = 'publish_down';
-}
-elseif (strpos($listOrder, 'modified') !== false)
-{
-    $orderingColumn = 'modified';
-}
-else
-{
-    $orderingColumn = 'created';
-}
+$saveOrder = $listOrder == 'p.ordering';
 
 if ($saveOrder)
 {
@@ -62,7 +43,93 @@ if ($saveOrder)
 			</div>
 		<?php else : ?>
 		<table class="table table-striped" id="planList">
-		
+			<thead>
+				<tr>
+					<th width="1%" class="nowrap center hidden-phone">
+						<?php echo JHtml::_('searchtools.sort', '', 'p.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+					</th>
+					<th width="1%" class="center">
+						<?php echo JHtml::_('grid.checkall'); ?>
+					</th>
+					<th width="1%" class="nowrap center">
+						<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'p.state', $listDirn, $listOrder); ?>
+					</th>
+					<th style="min-width:100px" class="nowrap">
+						<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'p.title', $listDirn, $listOrder); ?>
+					</th>
+					<th>
+						<?php echo JHtml::_('searchtools.sort', 'COM_JVOTER_FIELD_PRICE_LABEL', 'p.price', $listDirn, $listOrder); ?>
+					</th>
+					<th width="1%" class="nowrap hidden-phone">
+						<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'p.id', $listDirn, $listOrder); ?>
+					</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="6">
+						<?php echo $this->pagination->getListFooter(); ?>
+					</td>
+				</tr>
+			</tfoot>
+			<tbody>
+			<?php foreach ($this->items as $i => $item) :?>
+				<?php $ordering   = ($listOrder == 'f.ordering'); ?>
+				<?php $canEdit    = $user->authorise('core.edit', 'com_jvoter.plan.' . $item->id); ?>
+				<?php $canCheckin = $user->authorise('core.admin', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0; ?>
+				<?php $canEditOwn = $user->authorise('core.edit.own', 'com_jvoter.plan.' . $item->id) && $item->created_by == $userId; ?>
+				<?php $canChange  = $user->authorise('core.edit.state', 'com_jvoter.plan.' . $item->id) && $canCheckin; ?>
+				<tr class="row<?php echo $i % 2; ?>" item-id="<?php echo $item->id ?>">
+					<td class="order nowrap center hidden-phone">
+						<?php $iconClass = ''; ?>
+						<?php if (!$canChange) : ?>
+							<?php $iconClass = ' inactive'; ?>
+						<?php elseif (!$saveOrder) : ?>
+							<?php $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED'); ?>
+						<?php endif; ?>
+						<span class="sortable-handler<?php echo $iconClass; ?>">
+							<span class="icon-menu" aria-hidden="true"></span>
+						</span>
+						<?php if ($canChange && $saveOrder) : ?>
+							<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" />
+						<?php endif; ?>
+					</td>
+					<td class="center">
+						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					</td>
+					<td class="center">
+						<div class="btn-group">
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'plans.', $canChange, 'cb'); ?>
+							<?php // Create dropdown items and render the dropdown list. ?>
+							<?php if ($canChange) : ?>
+								<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'plans'); ?>
+								<?php JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'plans'); ?>
+								<?php echo JHtml::_('actionsdropdown.render', $this->escape($item->title)); ?>
+							<?php endif; ?>
+						</div>
+					</td>
+					<td>
+						<div class="pull-left break-word">
+							<?php if ($item->checked_out) : ?>
+								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'plans.', $canCheckin); ?>
+							<?php endif; ?>
+							<?php if ($canEdit || $canEditOwn) : ?>
+								<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_jvoter&task=plan.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+									<?php echo $this->escape($item->title); ?></a>
+							<?php else : ?>
+								<?php echo $this->escape($item->title); ?>
+							<?php endif; ?>
+						</div>
+					</td>
+					<td class="small">
+						<?php echo JVoterHelper::formatAmount($item->price); ?>
+					</td>
+					<td class="center hidden-phone">
+						<span><?php echo (int) $item->id; ?></span>
+					</td>
+				</tr>
+			<?php endforeach;?>
+			</tbody>
 		</table>
 		<?php endif; ?>
 

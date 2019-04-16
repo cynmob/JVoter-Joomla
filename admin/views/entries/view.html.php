@@ -7,11 +7,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for a list of plans.
+ * View class for a list of features.
  *
  * @since  1.6
  */
-class JVoterViewPlans extends JViewLegacy
+class JVoterViewEntries extends JViewLegacy
 {   
     /**
      * An array of items
@@ -66,7 +66,7 @@ class JVoterViewPlans extends JViewLegacy
     {
         if ($this->getLayout() !== 'modal')
         {
-            JVoterHelper::addSubmenu('plans');
+            JVoterHelper::addSubmenu('entries');
         }
         
         $this->items         = $this->get('Items');
@@ -77,7 +77,7 @@ class JVoterViewPlans extends JViewLegacy
              
         // Check for errors.
         if (count($errors = $this->get('Errors')))
-        {
+        {           
             throw new Exception(implode("\n", $errors), 500);
         }
               
@@ -102,37 +102,37 @@ class JVoterViewPlans extends JViewLegacy
         // Get the toolbar object instance
         $bar = JToolbar::getInstance('toolbar');
         
-        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_PLANS'), 'archive plan');
+        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_ENTRIES'), 'puzzle-piece entry');
         
         if ($canDo->get('core.create'))
         {
-            JToolbarHelper::addNew('plan.add');
+            JToolbarHelper::addNew('entry.add');
         }
         
         if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
         {
-            JToolbarHelper::editList('plans.edit');
+            JToolbarHelper::editList('entries.edit');
         }
         
         if ($canDo->get('core.edit.state'))
         {
-            JToolbarHelper::publish('plans.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolbarHelper::unpublish('plans.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-            JToolbarHelper::archiveList('plans.archive');
+            JToolbarHelper::publish('entries.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolbarHelper::unpublish('entries.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            JToolbarHelper::archiveList('entries.archive');
         }
         
         if ($user->authorise('core.admin'))
         {
-            JToolbarHelper::checkin('plans.checkin');
-        }
-        
+            JToolbarHelper::checkin('entries.checkin');
+        }                    
+                
         if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
         {
-            JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'plans.delete', 'JTOOLBAR_EMPTY_TRASH');
+            JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'entries.delete', 'JTOOLBAR_EMPTY_TRASH');
         }
         elseif ($canDo->get('core.edit.state'))
         {
-            JToolbarHelper::trash('plans.trash');
+            JToolbarHelper::trash('entries.trash');
         }
         
         if ($user->authorise('core.admin', 'com_jvoter') || $user->authorise('core.options', 'com_jvoter'))
@@ -142,22 +142,20 @@ class JVoterViewPlans extends JViewLegacy
     }
     
     /**
-     * Returns an array of fields the table can be sorted by
+     * Returns the sort fields.
      *
-     * @return  array  Array containing the field name to sort by as the key and display text as value
+     * @return  array
      *
-     * @since   3.0
+     * @since   3.7.0
      */
     protected function getSortFields()
     {
         return array(
-            'p.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
-            'p.state'        => JText::_('JSTATUS'),
-            'p.title'        => JText::_('JGLOBAL_TITLE'),
-            'p.price'        => JText::_('COM_JVOTER_FIELD_PRICE_LABEL'),
-            'p.created_by'   => JText::_('JAUTHOR'),
-            'p.created'      => JText::_('JDATE'),
-            'p.id'           => JText::_('JGRID_HEADING_ID')
+            'e.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+            'e.state'    => JText::_('JSTATUS'),
+            'e.title'    => JText::_('JGLOBAL_TITLE'),
+            'e.type'     => JText::_('COM_JVOTER_FIELD_TYPE_LABEL'),               
+            'e.id'       => JText::_('JGRID_HEADING_ID'),
         );
     }
 }

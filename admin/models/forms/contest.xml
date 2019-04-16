@@ -219,6 +219,18 @@
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
+		
+		<field 
+			name="moderated" 
+			type="radio"
+			label="JFEATURED"
+			description="COM_CONTENT_FIELD_FEATURED_DESC"
+			class="btn-group btn-group-yesno"
+			default="0"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 
 		<field 
 			name="rules" 
@@ -233,8 +245,8 @@
 
 	</fieldset>
 
-	<fields name="attribs" label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
-		<fieldset name="basic" label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
+	<fields name="attribs" label="COM_JVOTER_ATTRIBS_FIELDSET_LABEL">
+		<fieldset name="basic" label="COM_JVOTER_ATTRIBS_FIELDSET_LABEL">
 
 			<field 
 				name="article_layout" 
@@ -555,60 +567,6 @@
 				description="COM_CONTENT_FIELD_BROWSER_PAGE_TITLE_DESC"
 				size="25" 
 			/>
-		</fieldset>
-
-		<fieldset name="editorConfig" label="COM_CONTENT_EDITORCONFIG_FIELDSET_LABEL">
-			<field
-				name="show_publishing_options"
-				type="list"
-				label="COM_CONTENT_SHOW_PUBLISHING_OPTIONS_LABEL"
-				description="COM_CONTENT_SHOW_PUBLISHING_OPTIONS_DESC"
-				default=""
-				useglobal="true"
-				class="chzn-color"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field
-				name="show_article_options"
-				type="list"
-				label="COM_CONTENT_SHOW_ARTICLE_OPTIONS_LABEL"
-				description="COM_CONTENT_SHOW_ARTICLE_OPTIONS_DESC"
-				default=""
-				useglobal="true"
-				class="chzn-color"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field
-				name="show_urls_images_backend"
-				type="list"
-				label="COM_CONTENT_SHOW_IMAGES_URLS_BACK_LABEL"
-				description="COM_CONTENT_SHOW_IMAGES_URLS_BACK_DESC"
-				useglobal="true"
-				class="chzn-color"
-				default=""
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field
-				name="show_urls_images_frontend"
-				type="list"
-				label="COM_CONTENT_SHOW_IMAGES_URLS_FRONT_LABEL"
-				description="COM_CONTENT_SHOW_IMAGES_URLS_FRONT_DESC"
-				useglobal="true"
-				class="chzn-color"
-				default=""
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
 		</fieldset>
 
 		<fieldset name="basic-limited" label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">

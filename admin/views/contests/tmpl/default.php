@@ -13,7 +13,7 @@ JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', '.multiplePlans', null, array('placeholder_text_multiple' => JText::_('COM_JVOTER_SELECT_PLAN_OPT_LABEL')));
 JHtml::_('formbehavior.chosen', '.multipleCategories', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_CATEGORY')));
 JHtml::_('formbehavior.chosen', '.multipleAccessLevels', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_ACCESS')));
-JHtml::_('formbehavior.chosen', '.multipleAuthors', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_AUTHOR')));
+JHtml::_('formbehavior.chosen', '.multipleAuthors', null, array('placeholder_text_multiple' => JText::_('COM_JVOTER_OPTION_SELECT_ORGANIZER')));
 JHtml::_('formbehavior.chosen', 'select');
 
 $app       = JFactory::getApplication();

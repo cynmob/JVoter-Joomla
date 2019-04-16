@@ -1,14 +1,29 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `jvoter`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_contests`
+--
+
 CREATE TABLE IF NOT EXISTS `#__jvoter_contests` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
   `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `headertext` text NOT NULL,
   `footertext` text NOT NULL,
   `abouttext` text NOT NULL,
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `type` ENUM('image','text') NOT NULL DEFAULT 'image',
-  `catid` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `planid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `moderated` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `status` varchar(255) NOT NULL DEFAULT 'pending' COMMENT 'pending, denied, active, completed', 
+  `type` ENUM('photo','video','simple') NOT NULL DEFAULT 'photo',
+  `catid` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `planid` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `created_by_alias` varchar(255) NOT NULL DEFAULT '',
@@ -38,13 +53,20 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_contests` (
   KEY `idx_alias` (`alias`(191))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_entries`
+--
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_entries` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `contestid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `contestid` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `title` varchar(250) NOT NULL DEFAULT '',
   `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'active/inactive',
+  `state` tinyint(3) NOT NULL DEFAULT '0',  
+  `status` varchar(255) NOT NULL DEFAULT 'pending' COMMENT 'pending, denied, active, completed', 
+  `moderated` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `images` text NOT NULL,
   `description` text NOT NULL, 
   `vote` int(11) NOT NULL DEFAULT '0',
@@ -57,17 +79,53 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_entries` (
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),  
   KEY `idx_contestid` (`contestid`),
-  KEY `idx_status_ordering` (`status`,`ordering`)
+  KEY `idx_state` (`state`),
+  KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_media`
+--
+
+CREATE TABLE IF NOT EXISTS `#__jvoter_media` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `entryid` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '', 
+  `description` text NOT NULL,
+  `params` text NOT NULL,
+  `state` tinyint(3) NOT NULL DEFAULT '0',  
+  `primary` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `thumb` varchar(255) DEFAULT NULL,
+  `path` VARCHAR(255) NOT NULL,
+  `mimetype` VARCHAR(64) NOT NULL DEFAULT '',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `checked_out` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(10) UNSIGNED NOT NULL DEFAULT 0,  
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`), 
+  KEY `idx_entryid` (`entryid`),
+  KEY `idx_state` (`state`),
+  KEY `idx_createdby` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_features`
+--
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_features` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
   `label` varchar(250) NOT NULL DEFAULT '',
   `namekey` varchar(50) NOT NULL,  
   `value` text NOT NULL,
-  `description` text NOT NULL COMMENT 'Used as tooltip or field description.',
+  `description` text NOT NULL COMMENT 'Used as tooltip or field description.',  
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `type` varchar(50) DEFAULT NULL COMMENT 'can be varchar, boolean, select, etc',  
   `core` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -78,19 +136,27 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_features` (
   `created_by` int(10) UNSIGNED NOT NULL DEFAULT 0,  
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `note` varchar(255) NOT NULL DEFAULT '',
+  `access` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `namekey` (`namekey`),
-  KEY `idx_published_ordering` (`published`,`ordering`)
+  KEY `idx_state` (`state`),
+  KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_plans`
+--
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_plans` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL DEFAULT '',
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
   `price` DECIMAL(15,2) NOT NULL DEFAULT '0.00' ,
   `features` text NOT NULL,
   `description` text NOT NULL,
-  `published` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,  
+  `state` tinyint(3) NOT NULL DEFAULT '0', 
   `ordering` int(11) NOT NULL DEFAULT '0',
   `checked_out` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -99,45 +165,32 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_plans` (
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`), 
-  KEY `idx_published_ordering` (`published`,`ordering`)
+  KEY `idx_state` (`state`),
+  KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `#__jvoter_organizations` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `address` text,
-  `suburb` varchar(100),
-  `state` varchar(100),
-  `country` varchar(100),
-  `postcode` varchar(100),
-  `telephone` varchar(255),
-  `fax` varchar(255),
-  `mobile` varchar(255) NOT NULL DEFAULT '',
-  `webpage` varchar(255) NOT NULL DEFAULT '',
-  `about` mediumtext,
-  `image` varchar(255),
-  `email` varchar(255),
-  `published` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `checked_out` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ordering` int(11) NOT NULL DEFAULT 0,
-  `params` text NOT NULL,  
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `idx_checkout` (`checked_out`),
-  KEY `idx_published` (`published`),
-  KEY `idx_createdby` (`created_by`) 
+--
+-- Table structure for table `#__jvoter_rating`
+--
+
+CREATE TABLE IF NOT EXISTS `#__jvoter_rating` (
+  `entry_id` int(11) NOT NULL DEFAULT 0,
+  `rating_sum` int(10) unsigned NOT NULL DEFAULT 0,
+  `rating_count` int(10) unsigned NOT NULL DEFAULT 0,
+  `lastip` varchar(50) NOT NULL DEFAULT '', 
+  PRIMARY KEY (`entry_id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_date_orders`
+--
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_date_orders` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `contestid` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(250) NOT NULL DEFAULT '',  
   `images` text NOT NULL,
@@ -152,12 +205,18 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_date_orders` (
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_contestid` (`contestid`),
-  KEY `idx_status_ordering` (`status`,`ordering`)
+  KEY `idx_status` (`status`),
+  KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__jvoter_orders`
+--
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_orders` (
-	`id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,	
+	`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,	
 	`userid` int(10) UNSIGNED NOT NULL DEFAULT '0',
 	`status` varchar(255) NOT NULL DEFAULT '',
 	`type` varchar(50) NOT NULL DEFAULT 'entry' COMMENT 'contest, entry, buydate',	
@@ -180,5 +239,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_orders` (
 	`payment_params` text NOT NULL DEFAULT '',	
 	`ip` varchar(255) NOT NULL DEFAULT '',	
 	PRIMARY KEY (`id`),
+	KEY `idx_createdby` (`created_by`),
+	KEY `idx_status` (`status`),
 	KEY `idx_userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;

@@ -19,6 +19,7 @@ $js .= "com_jvoter.jbase = '" . $uri->root() . "';\n";
 $doc->addScriptDeclaration($js);
 
 JHtml::_('stylesheet', 'com_jvoter/font-awesome.min.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_jvoter/backend.min.css', array('version' => 'auto', 'relative' => true));
 
 // Include dependancies
 jimport('joomla.application.component.controller');

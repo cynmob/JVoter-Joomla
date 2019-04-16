@@ -136,9 +136,16 @@ class JVoterViewContests extends JViewLegacy
         }
         
         if ($canDo->get('core.edit.state'))
-        {
-            JToolbarHelper::publish('contests.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolbarHelper::unpublish('contests.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        {                        
+            //JToolbarHelper::publish('contests.publish', 'JTOOLBAR_PUBLISH', true);
+            //JToolbarHelper::unpublish('contests.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            
+            // Add an approve button.
+            $bar->appendButton('Standard', 'thumbs-up', 'COM_JVOTER_TOOLBAR_APPROVE', 'contests.publish', true);
+            
+            // Add a disapprove button.
+            $bar->appendButton('Standard', 'thumbs-down', 'COM_JVOTER_TOOLBAR_DISAPPROVE', 'contests.unpublish', true);                        
+                        
             JToolbarHelper::custom('contests.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
             JToolbarHelper::custom('contests.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
             JToolbarHelper::archiveList('contests.archive');
@@ -173,8 +180,8 @@ class JVoterViewContests extends JViewLegacy
             'jc.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
             'jc.state'        => JText::_('JSTATUS'),
             'jc.title'        => JText::_('JGLOBAL_TITLE'),
-            'category_title' => JText::_('JCATEGORY'),
-            'access_level'   => JText::_('JGRID_HEADING_ACCESS'),
+            'category_title'  => JText::_('JCATEGORY'),
+            'access_level'    => JText::_('JGRID_HEADING_ACCESS'),
             'jc.created_by'   => JText::_('JAUTHOR'),         
             'jc.created'      => JText::_('JDATE'),
             'jc.id'           => JText::_('JGRID_HEADING_ID'),

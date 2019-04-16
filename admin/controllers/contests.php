@@ -19,36 +19,79 @@ class JVoterControllerContests extends JControllerAdmin
 {
 
     /**
-     * Method to clone existing Plans
-     *
-     * @return void
-     */
-    public function duplicate()
-    {
-        // Check for request forgeries
-        Jsession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-        
-        // Get id(s)
-        $pks = $this->input->post->get('cid', array(), 'array');
-        
-        try
-        {
-            if(empty($pks))
-            {
-                throw new Exception(JText::_('COM_JVOTER_NO_ITEMS_SELECTED'));
-            }
-            
-            ArrayHelper::toInteger($pks);
-            $model = $this->getModel();
-            $model->duplicate($pks);
-            $this->setMessage(JText::_('COM_JVOTER_ITEMS_SUCCESS_DUPLICATED'));
-        } catch(Exception $e)
-        {
-            $this->app->enqueueMessage($e->getMessage(), 'warning');
-        }
-        
-        $this->setRedirect('index.php?option=com_jvoter&view=contests');
-    }
+	 * Method to publish a list of items
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	public function publish()
+	{
+		// Check for request forgeries
+		$this->checkToken();
+
+		// Get items to publish from the request.
+		$cid = $this->input->get('cid', array(), 'array');
+		$data = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3);
+		$task = $this->getTask();
+		$value = ArrayHelper::getValue($data, $task, 0, 'int');
+
+		if (empty($cid))
+		{
+			\JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+
+			// Make sure the item ids are integers
+			$cid = ArrayHelper::toInteger($cid);
+
+			// Publish the items.
+			try
+			{
+				$model->publish($cid, $value);
+				$errors = $model->getErrors();
+				$ntext = null;
+
+				if ($value === 1)
+				{
+					if ($errors)
+					{
+						\JFactory::getApplication()->enqueueMessage(\JText::plural($this->text_prefix . '_N_ITEMS_FAILED_PUBLISHING', count($cid)), 'error');
+					}
+					else
+					{
+						$ntext = $this->text_prefix . '_N_CONTESTS_PUBLISHED';
+					}
+				}
+				elseif ($value === 0)
+				{
+					$ntext = $this->text_prefix . '_N_CONTESTS_UNPUBLISHED';
+				}
+				elseif ($value === 2)
+				{
+					$ntext = $this->text_prefix . '_N_CONTESTS_ARCHIVED';
+				}
+				else
+				{
+					$ntext = $this->text_prefix . '_N_CONTESTS_TRASHED';
+				}
+
+				if ($ntext !== null)
+				{
+					$this->setMessage(\JText::plural($ntext, count($cid)));
+				}
+			}
+			catch (\Exception $e)
+			{
+				$this->setMessage($e->getMessage(), 'error');
+			}
+		}
+		
+		$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+	}
 
     /**
      * Proxy for getModel.

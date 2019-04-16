@@ -102,7 +102,7 @@ class JVoterViewFeatures extends JViewLegacy
         // Get the toolbar object instance
         $bar = JToolbar::getInstance('toolbar');
         
-        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_FEATURES'), 'calendar-check-o plan');
+        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_FEATURES'), 'puzzle-piece feature');
         
         if ($canDo->get('core.create'))
         {
@@ -117,9 +117,14 @@ class JVoterViewFeatures extends JViewLegacy
         if ($canDo->get('core.edit.state'))
         {
             JToolbarHelper::publish('features.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolbarHelper::unpublish('features.unpublish', 'JTOOLBAR_UNPUBLISH', true);           
+            JToolbarHelper::unpublish('features.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            JToolbarHelper::archiveList('features.archive');
+        }
+        
+        if ($user->authorise('core.admin'))
+        {
             JToolbarHelper::checkin('features.checkin');
-        }        
+        }                    
                 
         if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
         {
@@ -137,22 +142,20 @@ class JVoterViewFeatures extends JViewLegacy
     }
     
     /**
-     * Returns an array of fields the table can be sorted by
+     * Returns the sort fields.
      *
-     * @return  array  Array containing the field name to sort by as the key and display text as value
+     * @return  array
      *
-     * @since   3.0
+     * @since   3.7.0
      */
     protected function getSortFields()
     {
         return array(
-            'f.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
-            'f.state'        => JText::_('JSTATUS'),
-            'f.label'        => JText::_('JGLOBAL_TITLE'),
-            'f.namekey'      => JText::_('Name'),
-            'f.created_by'   => JText::_('JAUTHOR'),
-            'f.created'      => JText::_('JDATE'),
-            'f.id'           => JText::_('JGRID_HEADING_ID')
+            'f.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+            'f.state'    => JText::_('JSTATUS'),
+            'f.title'    => JText::_('JGLOBAL_TITLE'),
+            'f.type'     => JText::_('COM_JVOTER_FIELD_TYPE_LABEL'),               
+            'f.id'       => JText::_('JGRID_HEADING_ID'),
         );
     }
 }

@@ -82,7 +82,13 @@ abstract class JVoterHelper
         return $result;
     }
    
-
+    /**
+     * Format amount
+     * 
+     * @params string   - the amount/price to be formatted
+     * 
+     * @return string
+     */
     public static function formatAmount($amount)
     {
         $params = ComponentHelper::getParams('com_jvoter');

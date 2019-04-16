@@ -50,7 +50,7 @@ class JFormFieldPlan extends JFormField
         $query = $db->getQuery(true);
         $query->select('*')
             ->from('#__jvoter_plans')
-            ->where('published = 1');
+            ->where('state = 1');
         
         $db->setQuery($query);
         
@@ -68,7 +68,7 @@ class JFormFieldPlan extends JFormField
         {
             foreach($plans as $plan)
             {                                              
-                $options[] = JHtml::_('select.option', $plan->id, $plan->name);
+                $options[] = JHtml::_('select.option', $plan->id, $plan->title);
             }
         }
         

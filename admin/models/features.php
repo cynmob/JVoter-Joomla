@@ -34,6 +34,7 @@ class JVoterModelFeatures extends JModelList
 		        'title', 'f.title',
 		        'label', 'f.label',
 		        'namekey', 'f.namekey',
+		        'type', 'f.type',
 		        'checked_out', 'f.checked_out',
 		        'checked_out_time', 'f.checked_out_time',		      
 		        'state', 'f.state',		       
@@ -77,10 +78,7 @@ class JVoterModelFeatures extends JModelList
 		
 		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);
-		
-		$type = $this->getUserStateFromRequest($this->context . '.filter.type', 'filter_type', '');
-		$this->setState('filter.type', $type);
-		
+			
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_jvoter');
 		$this->setState('params', $params);
@@ -107,8 +105,8 @@ class JVoterModelFeatures extends JModelList
 	{
 	    // Compile the store id.
 	    $id .= ':' . $this->getState('filter.search');	  
-	    $id .= ':' . $this->getState('filter.published');
-	    $id .= ':' . $this->getState('filter.type');
+	    $id .= ':' . $this->getState('filter.published');	 
+	    $id .= ':' . serialize($this->getState('filter.type'));
 	    
 	    return parent::getStoreId($id);
 	}
@@ -131,11 +129,15 @@ class JVoterModelFeatures extends JModelList
 		$query->select(
 		    $this->getState(
 		        'list.select',
-		        'DISTINCT f.id, f.title, f.label, f.namekey, f.value, f.checked_out, f.checked_out_time' .
+		        'DISTINCT f.id, f.title, f.label, f.namekey, f.type, f.value, f.checked_out, f.checked_out_time' .
 		        ', f.state, f.created, f.created_by, f.modified, f.ordering'		       
 		    )
 		);
-		$query->from('#__jvoter_features AS f');	     
+		$query->from('#__jvoter_features AS f');	
+		
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+		      ->join('LEFT', '#__users AS uc ON uc.id=f.checked_out');
 		      
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -149,11 +151,10 @@ class JVoterModelFeatures extends JModelList
 		    $query->where('(f.state = 0 OR f.state = 1)');
 		}
 		
-		// Filter by type
-		$type = $this->getState('filter.type');
-		if($type)
+		// Filter by type		
+		if($type = $this->getState('filter.type'))
 		{
-		    $query->where('f.type = ' . (string) $type);
+		    $query->where('f.type = ' . $db->quote($type));
 		}
                 
         // Filter by search in title.
