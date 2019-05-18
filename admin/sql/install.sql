@@ -13,20 +13,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_contests` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `title` VARCHAR(255) NOT NULL DEFAULT '',
+  `alias` VARCHAR(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `headertext` text NOT NULL,
   `footertext` text NOT NULL,
   `abouttext` text NOT NULL,
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `moderated` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `status` varchar(255) NOT NULL DEFAULT 'pending' COMMENT 'pending, denied, active, completed', 
+  `status` VARCHAR(255) NOT NULL DEFAULT 'pending' COMMENT 'pending, denied, active, completed', 
   `type` ENUM('photo','video','simple') NOT NULL DEFAULT 'photo',
   `catid` int(11) UNSIGNED NOT NULL DEFAULT '0',
-  `planid` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `plan_id` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `created_by_alias` VARCHAR(255) NOT NULL DEFAULT '',
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `checked_out` int(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_contests` (
   KEY `idx_checkout` (`checked_out`),
   KEY `idx_state` (`state`),
   KEY `idx_catid` (`catid`),
-  KEY `idx_planid` (`planid`),
+  KEY `idx_plan_id` (`plan_id`),
   KEY `idx_createdby` (`created_by`),
   KEY `idx_featured_catid` (`featured`,`catid`),  
   KEY `idx_alias` (`alias`(191))
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_contests` (
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_entries` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `contestid` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `contest_id` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `title` varchar(250) NOT NULL DEFAULT '',
   `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `state` tinyint(3) NOT NULL DEFAULT '0',  
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_entries` (
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),  
-  KEY `idx_contestid` (`contestid`),
+  KEY `idx_contest_id` (`contest_id`),
   KEY `idx_state` (`state`),
   KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
@@ -91,13 +91,13 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_entries` (
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_media` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `entryid` int(11) UNSIGNED NOT NULL DEFAULT '0',
-  `title` varchar(255) NOT NULL DEFAULT '', 
+  `entry_id` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `title` VARCHAR(255) NOT NULL DEFAULT '', 
   `description` text NOT NULL,
   `params` text NOT NULL,
   `state` tinyint(3) NOT NULL DEFAULT '0',  
   `primary` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `thumb` varchar(255) DEFAULT NULL,
+  `thumb` VARCHAR(255) DEFAULT NULL,
   `path` VARCHAR(255) NOT NULL,
   `mimetype` VARCHAR(64) NOT NULL DEFAULT '',
   `ordering` int(11) NOT NULL DEFAULT '0',
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_media` (
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`), 
-  KEY `idx_entryid` (`entryid`),
+  KEY `idx_entry_id` (`entry_id`),
   KEY `idx_state` (`state`),
   KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_features` (
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `type` varchar(50) DEFAULT NULL COMMENT 'can be varchar, boolean, select, etc',  
   `core` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `translate` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   `checked_out` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -191,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_rating` (
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_date_orders` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `contestid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `contest_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(250) NOT NULL DEFAULT '',  
   `images` text NOT NULL,
   `description` text NOT NULL,  
@@ -204,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_date_orders` (
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'approve or not',
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_contestid` (`contestid`),
+  KEY `idx_contest_id` (`contest_id`),
   KEY `idx_status` (`status`),
   KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
@@ -217,10 +218,10 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_date_orders` (
 
 CREATE TABLE IF NOT EXISTS `#__jvoter_orders` (
 	`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,	
-	`userid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+	`user_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
 	`status` varchar(255) NOT NULL DEFAULT '',
 	`type` varchar(50) NOT NULL DEFAULT 'entry' COMMENT 'contest, entry, buydate',	
-	`itemid` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'contest ID, entry ID, date order ID',
+	`item_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'contest ID, entry ID, date order ID',
 	`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   	`created_by` int(10) UNSIGNED NOT NULL DEFAULT 0,  
   	`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -241,5 +242,5 @@ CREATE TABLE IF NOT EXISTS `#__jvoter_orders` (
 	PRIMARY KEY (`id`),
 	KEY `idx_createdby` (`created_by`),
 	KEY `idx_status` (`status`),
-	KEY `idx_userid` (`userid`)
+	KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;

@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group" id="control-group-card-number">
 		<label for="card-number" class="control-label" style="width:190px; margin-right:20px; font-weight: bold;">
-			<?php echo JText::_('JDONATE_ADDON_GATEWAY_STRIPE_FORM_CC') ?>
+			<?php echo JText::_('PLG_JDPAYMENT_STRIPE_FORM_CC') ?>
 		</label>
 		<div class="controls">
 			<input type="text" name="card-number" id="card-number" class="input-large" />

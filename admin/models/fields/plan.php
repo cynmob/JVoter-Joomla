@@ -55,13 +55,12 @@ class JFormFieldPlan extends JFormField
         $db->setQuery($query);
         
         $plans = $db->loadObjectList();
-       
-        
+            
         $options = array();
         
         if(! $this->multiple)
         {
-            $options[] = JHtml::_('select.option', '', JText::_('COM_JVOTER_SELECT_PLAN_OPT_LABEL'));
+            $options[] = JHtml::_('select.option', "", JText::_('COM_JVOTER_SELECT_PLAN_OPT_LABEL'));
         }
         
         if(is_array($plans))
@@ -71,7 +70,7 @@ class JFormFieldPlan extends JFormField
                 $options[] = JHtml::_('select.option', $plan->id, $plan->title);
             }
         }
-        
-        return JHtml::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', $this->value, $this->options['control'] . $this->name);
+       
+        return JHtml::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
     }
 }

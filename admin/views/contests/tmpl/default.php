@@ -82,13 +82,16 @@ if ($saveOrder)
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'jc.title', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort',  'COM_JVOTER_FIELD_PLAN_LABEL', 'jc.plan_id', $listDirn, $listOrder); ?>
+						</th>
+						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'jc.access', $listDirn, $listOrder); ?>
 						</th>						
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort',  'JAUTHOR', 'jc.created_by', $listDirn, $listOrder); ?>
 						</th>						
 						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_DATE_' . strtoupper($orderingColumn), 'jc.' . $orderingColumn, $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'COM_JVOTER_HEADING_DATE_' . strtoupper($orderingColumn), 'jc.' . $orderingColumn, $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'jc.hits', $listDirn, $listOrder); ?>
@@ -143,13 +146,14 @@ if ($saveOrder)
 						</td>
 						<td class="center">
 							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-								<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
+								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'contests.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+								<?php echo JHtml::_('contestadministrator.featured', $item->featured, $i, $canChange); ?>
+								<?php echo JHtml::_('contestadministrator.moderated', $item->featured, $i, $canChange); ?>
 								<?php // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'articles');
-									JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'articles');
+									JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'contests');
+									JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'contests');
 									echo JHtml::_('actionsdropdown.render', $this->escape($item->title));
 								}
 								?>
@@ -158,10 +162,10 @@ if ($saveOrder)
 						<td class="has-context">
 							<div class="pull-left break-word">
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'contests.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($canEdit || $canEditOwn) : ?>
-									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_content&task=article.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_jvoter&task=contest.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 										<?php echo $this->escape($item->title); ?></a>
 								<?php else : ?>
 									<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
@@ -175,8 +179,8 @@ if ($saveOrder)
 								</span>
 								<div class="small">
 									<?php
-									$ParentCatUrl = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->parent_category_id . '&extension=com_content');
-									$CurrentCatUrl = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->catid . '&extension=com_content');
+									$ParentCatUrl = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->parent_category_id . '&extension=com_jvoter');
+									$CurrentCatUrl = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->catid . '&extension=com_jvoter');
 									$EditCatTxt = JText::_('JACTION_EDIT') . ' ' . JText::_('JCATEGORY');
 
 										echo JText::_('JCATEGORY') . ': ';
@@ -229,8 +233,11 @@ if ($saveOrder)
 											endif;
 										}
 									?>
-								</div>
+								</div>								
 							</div>
+						</td>
+						<td class="small hidden-phone">
+							<?php echo $this->escape($item->plan_title); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $this->escape($item->access_level); ?>
@@ -253,10 +260,7 @@ if ($saveOrder)
 									<?php echo JText::_('JNONE'); ?>
 								<?php endif; ?>
 							<?php endif; ?>
-						</td>
-						<td class="small hidden-phone">
-							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
-						</td>
+						</td>						
 						<td class="nowrap small hidden-phone">
 							<?php
 							$date = $item->{$orderingColumn};
@@ -267,19 +271,7 @@ if ($saveOrder)
 							<span class="badge badge-info">
 								<?php echo (int) $item->hits; ?>
 							</span>
-						</td>
-						<?php if ($this->vote) : ?>
-							<td class="hidden-phone center">
-								<span class="badge badge-success" >
-								<?php echo (int) $item->rating_count; ?>
-								</span>
-							</td>
-							<td class="hidden-phone center">
-								<span class="badge badge-warning" >
-								<?php echo (int) $item->rating; ?>
-								</span>
-							</td>
-						<?php endif; ?>
+						</td>						
 						<td class="hidden-phone">
 							<?php echo (int) $item->id; ?>
 						</td>

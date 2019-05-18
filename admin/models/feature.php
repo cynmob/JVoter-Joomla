@@ -32,8 +32,8 @@ class JVoterModelFeature extends JModelAdmin
      * @var    string
      * @since  3.2
      */
-    public $typeAlias = 'com_jvoter.feature'; 
-          
+    public $typeAlias = 'com_jvoter.feature';
+    
     /**
      * Method to test whether a record can be deleted.
      *
@@ -76,11 +76,11 @@ class JVoterModelFeature extends JModelAdmin
         {
             return $user->authorise('core.edit.state', 'com_jvoter.feature.' . (int) $record->id);
         }
-              
+        
         // Default to component settings if neither article nor category known.
         return parent::canEditState($record);
     }
-        
+    
     /**
      * Returns a Table object, always creating it.
      *
@@ -95,7 +95,7 @@ class JVoterModelFeature extends JModelAdmin
         return JTable::getInstance($type, $prefix, $config);
     }
     
-       
+    
     /**
      * Method to get the record form.
      *
@@ -127,7 +127,7 @@ class JVoterModelFeature extends JModelAdmin
         // Determine correct permissions to check.
         if ($this->getState('feature.id'))
         {
-            $id = $this->getState('feature.id');            
+            $id = $this->getState('feature.id');
         }
         
         $user = JFactory::getUser();
@@ -137,16 +137,16 @@ class JVoterModelFeature extends JModelAdmin
         if ($id != 0 && (!$user->authorise('core.edit.state', 'com_jvoter.feature.' . (int) $id))
             || ($id == 0 && !$user->authorise('core.edit.state', 'com_jvoter')))
         {
-            // Disable fields for display.           
-            $form->setFieldAttribute('ordering', 'disabled', 'true');          
+            // Disable fields for display.
+            $form->setFieldAttribute('ordering', 'disabled', 'true');
             $form->setFieldAttribute('state', 'disabled', 'true');
             
             // Disable fields while saving.
-            // The controller has already verified this is an article you can edit.          
-            $form->setFieldAttribute('ordering', 'filter', 'unset');         
+            // The controller has already verified this is an article you can edit.
+            $form->setFieldAttribute('ordering', 'filter', 'unset');
             $form->setFieldAttribute('state', 'filter', 'unset');
-        }        
-                
+        }
+        
         return $form;
     }
     
@@ -168,16 +168,18 @@ class JVoterModelFeature extends JModelAdmin
             $data = $this->getItem();
             
             // Pre-select some filters (Status) in edit form if those have been selected in JVoter: Contests
-            if ($this->getState('feature.id') == 0)
+            if (!$data->id)
             {
                 $filters = (array) $app->getUserState('com_jvoter.features.filter');
+                $data->set('state', $app->input->getInt('state', ((isset($filters['state']) && $filters['state'] !== '') ? $filters['state'] : null)));
+                
                 $data->set(
-                    'state',
-                    $app->input->getInt(
-                        'state',
-                        ((isset($filters['published']) && $filters['published'] !== '') ? $filters['published'] : null)
-                        )
+                    'access',
+                    $app->input->getInt('access', (!empty($filters['access']) ? $filters['access'] : JFactory::getConfig()->get('access')))
                     );
+                
+                // Set the type if available from the request
+                $data->set('type', $app->input->getWord('type', $this->state->get('feature.type', $data->get('type'))));
             }
         }
         
@@ -232,21 +234,44 @@ class JVoterModelFeature extends JModelAdmin
      * @since   3.0
      */
     protected function preprocessForm(JForm $form, $data, $group = 'feature')
-    {        
+    {
         $dataObject = $data;
         
         if (is_array($dataObject))
         {
             $dataObject = (object) $dataObject;
         }
-        
+   
         if(isset($dataObject->type))
-        {
+        {                       
             // Not allowed to change the type of an existing record
             if ($dataObject->id)
             {
                 $form->setFieldAttribute('type', 'readonly', 'true');
-            }            
+            }
+            
+            switch($dataObject->type)
+            {
+                case 'boolean':
+                    $form->setFieldAttribute('value', 'type', 'radio');
+                    $form->setFieldAttribute('value', 'class', 'btn-group btn-group-yesno');
+                    break;
+                case 'integer':
+                    $form->setFieldAttribute('value', 'type', 'number');
+                    $form->setFieldAttribute('value', 'class', '');
+                    break;
+                case 'text':
+                default:
+                    $form->setFieldAttribute('value', 'type', 'textarea');
+                    $form->setFieldAttribute('value', 'class', '');
+                    $form->setFieldAttribute('value', 'default', '');
+                    break;
+            }
+        }
+        else {
+            $form->setFieldAttribute('value', 'type', 'textarea');
+            $form->setFieldAttribute('value', 'class', '');
+            $form->setFieldAttribute('value', 'default', '');
         }
         
         parent::preprocessForm($form, $data, $group);

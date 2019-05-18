@@ -1,2 +1,2 @@
 # JVoter-Joomla
-This is a voting component that lets you charge a fee for voting or free, allows control over amounts of fees and frequency of voting
+A flexible program for voting contests of all sorts. Raise money by charging a fee to vote, or use the free voting options. Customize cost per vote, daily voting, max votes, max entries, and more.

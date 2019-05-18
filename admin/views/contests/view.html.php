@@ -123,7 +123,7 @@ class JVoterViewContests extends JViewLegacy
         // Get the toolbar object instance
         $bar = JToolbar::getInstance('toolbar');
         
-        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_CONTESTS'), 'trophy contest');
+        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_CONTESTS'), 'trophy contests');
         
         if ($canDo->get('core.create') || count($user->getAuthorisedCategories('com_jvoter', 'core.create')) > 0)
         {

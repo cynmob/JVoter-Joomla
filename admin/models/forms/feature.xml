@@ -22,19 +22,14 @@
 			required="true" 
 		/>
 		
-		<field 
-			name="type" 
-			type="list" 
+		<field
+			name="type"
+			type="type"
 			label="COM_JVOTER_FIELD_TYPE_LABEL"
-			description="COM_JVOTER_FIELD_TYPE_DESC" 			
-			size="1" 
+			description="COM_JVOTER_FIELD_TYPE_DESC"
 			default="text"
-			required="true" 
-			>
-			<option value="boolean">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_BOOLEAN</option>
-			<option value="integer">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_INTEGER</option>
-			<option value="text">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_TEXT</option>
-		</field>		
+			required="true"
+		/>		
 		
 		<field
 			name="label"
@@ -56,11 +51,15 @@
 		
 		<field
 			name="value"
-			type="textarea"
+			type="radio"
 			label="COM_JVOTER_FIELD_DEFAULT_VALUE_LABEL"
-			description="COM_JVOTER_FIELD_DEFAULT_VALUE_DESC"
-			filter="raw"
-		/>
+			description="COM_JVOTER_FIELD_DEFAULT_VALUE_DESC"		
+			class="btn-group btn-group-yesno"	
+			default="0"
+		>		
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 
 		<field 
 			name="state" 
@@ -86,6 +85,18 @@
 			size="40"
 			filter="HTML"
 		/>
+		
+		<field
+			name="translate"
+			type="radio"
+			label="COM_JVOTER_FIELD_TRANSLATE_LABEL"
+			description="COM_JVOTER_FIELD_TRANSLATE_DESC"
+			class="btn-group btn-group-yesno"
+			default="0"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 
 		<field
 			name="buttonspacer"

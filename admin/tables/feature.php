@@ -88,6 +88,11 @@ class JVoterTableFeature extends JTable
             $this->type = 'text';
         }
         
+        if($this->type === 'boolean' && empty($this->value))
+        {
+            $this->value = '0';
+        }
+        
         $date = JFactory::getDate();
         $user = JFactory::getUser();
         

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.0" method="upgrade">
+<extension version="3.0" type="component" method="upgrade">
     <name>com_jvoter</name>
     <creationDate>March 2019</creationDate>    
     <author>ObeyTheBeagle Team</author>
@@ -15,7 +15,8 @@
      	<div class="alert-message">A flexible program for voting contests of all sorts. Raise money by charging a fee to vote, or use the free voting options. Customize cost per vote, daily voting, max votes, max entries, and more.</div>
     </div>
     ]]>
-    </description>      
+    </description>  
+        
     <scriptfile>script.jvoter.php</scriptfile>
     
     <install> <!-- Runs on install -->
@@ -90,6 +91,6 @@
         </fields>
     </config>
     <plugins>
-        <plugin group="search" plugin="jvoter"/>
+        <!-- <plugin group="search" plugin="jvoter"/>-->
     </plugins>    
 </extension>

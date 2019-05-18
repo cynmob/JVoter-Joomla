@@ -14,7 +14,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 JLoader::register('JdonateHelper', JPATH_ADMINISTRATOR . '/components/com_jdonate/helpers/jdonate.php');
-JLoader::registerAlias('JDHelper', 'JdonateHelper');
 
 $ids = array();
 $amount = 0;
@@ -32,7 +31,7 @@ foreach($dataAjax as $key => $item)
 			<label><?php echo JText::_('PLG_JDPAYMENT_PAYPAL_TOTAL_DONATION_AMOUNT');?></label>
 		</div>
 		<div class="controls">			
-			<input type="text" value="<?php echo JDHelper::formatAmount($amount);?>" class="disabled" disabled="disabled">
+			<input type="text" value="<?php echo JdonateHelper::formatAmount($amount);?>" class="disabled" disabled="disabled">
 		</div>
 	</div>
 	<div class="alert alert-info">

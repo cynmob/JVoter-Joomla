@@ -32,11 +32,10 @@ JFactory::getDocument()->addScriptDeclaration('
 <form action="<?php echo JRoute::_('index.php?option=com_jvoter&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 	<div class="form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JVOTER_VIEW_FIELD_FIELDSET_GENERAL', true)); ?>
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'features')); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'features', JText::_('COM_JVOTER_VIEW_FIELD_FIELDSET_FEATURES', true)); ?>
 		<div class="row-fluid">
-			<div class="span9">
-                <h3><?php echo JText::_('COM_JVOTER_FEATURES');?></h3>
+			<div class="span9">              
 				<fieldset class="adminform">
 					<?php echo $this->form->getInput('features'); ?>
 				</fieldset>	

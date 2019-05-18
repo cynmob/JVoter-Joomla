@@ -144,7 +144,7 @@ class JVoterModelEntries extends JModelList
 		$query->select(
 		    $this->getState(
 		        'list.select',
-		        'DISTINCT e.id, e.title, e.alias, e.contestid, e.checked_out, e.checked_out_time' .
+		        'DISTINCT e.id, e.title, e.alias, e.contest_id, e.checked_out, e.checked_out_time' .
 		        ', e.state, e.status, e.created, e.created_by, e.modified, e.ordering'		       
 		    )
 		);

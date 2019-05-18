@@ -39,7 +39,8 @@ JFactory::getDocument()->addScriptDeclaration('
 				<?php echo $this->form->renderField('type'); ?>
 				<?php echo $this->form->renderField('namekey'); ?>
 				<?php echo $this->form->renderField('label'); ?>
-				<?php echo $this->form->renderField('description'); ?>				
+				<?php echo $this->form->renderField('description'); ?>	
+				<?php echo $this->form->renderField('translate'); ?>			
 				<?php echo $this->form->renderField('value'); ?>				
 			</div>
 			<div class="span3">

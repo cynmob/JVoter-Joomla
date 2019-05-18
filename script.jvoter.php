@@ -61,6 +61,9 @@ class com_JVoterInstallerScript
 	 */
 	public function install ($parent)
 	{
+	    // Create core tables
+	    $this->runSQL($parent, 'install.sql');
+	    
 		// $parent is the class calling this method
 		$this->setDefault();
 		$this->setDefaultParams();
@@ -75,6 +78,9 @@ class com_JVoterInstallerScript
 	public function uninstall ($parent)
 	{
 		// $parent is the class calling this method
+		
+	    // uninstall query
+	    $this->runSQL($parent, 'uninstall.sql');
 	}
 
 	/**
@@ -84,18 +90,11 @@ class com_JVoterInstallerScript
 	 */
 	public function update ($parent)
 	{
-		// Create core tables
-		$this->runSQL($parent, 'install.sql');
+		// Update query
+		$this->runSQL($parent, 'update.sql');
 		
 		// Added this for tag
 		$this->setDefault();
-		
-		$db = JFactory::getDBO();
-		$config = JFactory::getConfig();
-		$configdb = $config->get('db');
-		
-		// Get dbprefix
-		$dbprefix = $config->get('dbprefix');
 	}
 	
 	/**
@@ -513,10 +512,8 @@ class com_JVoterInstallerScript
 						$installer = new JInstaller();
 						$result = $installer->install($path);
 						
-						$status->plugins[] = array(
-								// 'name' => 'Jdonate Payment - ' .
-								// ucfirst($plugin),
-								'name' => 'plg_jdpayment_' . $plugin,
+						$status->plugins[] = array(							
+								'name' => 'plg_otbpayment_' . $plugin,
 								'group' => $folder,
 								'result' => $result
 						);

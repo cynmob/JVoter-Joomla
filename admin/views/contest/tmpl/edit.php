@@ -68,8 +68,19 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 					<?php echo $this->form->renderField('abouttext'); ?>
 				</fieldset>
 			</div>
-			<div class="span3">
+			<div class="span3">				
+				<?php $this->set('fields',
+						array(						  
+						    array('published', 'state', 'enabled'),
+						    array('category', 'catid'),		
+						    'plan_id',
+                            'featured',
+                            'moderated',
+							'access'						   
+						)
+				); ?>
 				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+				<?php $this->set('fields', null); ?>		
 			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>		

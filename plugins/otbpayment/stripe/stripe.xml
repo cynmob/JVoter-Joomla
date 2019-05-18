@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.3.0" type="plugin" group="otbpayment" method="upgrade">
-	<name>PLG_JDPAYMENT_STRIPE</name>
-	<author>Jdonate Team</author>
-    <authorEmail>support@jdonate.com</authorEmail>
-    <authorUrl>http://www.jdonate.com</authorUrl>
-	<copyright>Copyright (c) 2018 Jdonate. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<creationDate>June 2018</creationDate>
-	<version>v1.0.0</version>
-	<description>PLG_JDPAYMENT_STRIPE_DESCRIPTION</description>
+	<name>PLG_OTBPAYMENT_STRIPE</name>
+    <author>ObeyTheBeagle Team</author>
+    <authorEmail>support@obeythebeagle.com</authorEmail>
+    <authorUrl>https://www.obeythebeagle.com</authorUrl>
+    <copyright>Copyright (c) 2019 ObeyTheBeagle. All rights reserved.</copyright>
+    <license>GNU General Public License version 3, or later</license>
+    <creationDate>May 2019</creationDate>
+    <version>1.0.0</version>
+    <description>PLG_OTBPAYMENT_STRIPE_XML_DESCRIPTION</description>
 	
 	<files>
 		<filename plugin="stripe">stripe.php</filename>
 		<folder>stripe</folder>
 	</files>
 	
-	<languages folder="languages">
-		<language tag="en-GB">en-GB/en-GB.plg_jdpayment_stripe.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_jdpayment_stripe.sys.ini</language>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_otbpayment_stripe.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_otbpayment_stripe.sys.ini</language>
 	</languages>
 	
 	<config>

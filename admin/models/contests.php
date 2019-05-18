@@ -36,6 +36,7 @@ class JVoterModelContests extends JModelList
 		        'checked_out', 'jc.checked_out',
 		        'checked_out_time', 'jc.checked_out_time',
 		        'catid', 'jc.catid', 'category_title',
+		        'plan_id', 'jc.plan_id', 'plan_title',
 		        'state', 'jc.state',
 		        'access', 'jc.access', 'access_level',
 		        'created', 'jc.created',
@@ -180,10 +181,15 @@ class JVoterModelContests extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level')
 		      ->join('LEFT', '#__viewlevels AS ag ON ag.id = jc.access');
-		
+	
 		// Join over the categories.
-		$query->select('c.title AS category_title')
+		$query->select('c.title AS category_title, c.created_user_id AS category_uid, c.level AS category_level')
 		      ->join('LEFT', '#__categories AS c ON c.id = jc.catid');
+		
+        // Join over the parent categories.
+        $query->select('parent.title AS parent_category_title, parent.id AS parent_category_id,
+						parent.created_user_id AS parent_category_uid, parent.level AS parent_category_level')
+		      ->join('LEFT', '#__categories AS parent ON parent.id = c.parent_id');
 		
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name')
@@ -191,8 +197,8 @@ class JVoterModelContests extends JModelList
 		
         // Join over the plans.
         $query->select('p.title AS plan_title')
-		      ->join('LEFT', '#__jvoter_plans AS p ON p.id = jc.planid');
-		
+		      ->join('LEFT', '#__jvoter_plans AS p ON p.id = jc.plan_id');
+			      
         // Filter by access level.
         $access = $this->getState('filter.access');
         
@@ -274,6 +280,21 @@ class JVoterModelContests extends JModelList
             $authorId = ArrayHelper::toInteger($authorId);
             $authorId = implode(',', $authorId);
             $query->where('jc.created_by IN (' . $authorId . ')');
+        }
+        
+        // Filter by plan
+        $planId = $this->getState('filter.plan_id');
+        
+        if (is_numeric($planId))
+        {
+            $type = $this->getState('filter.plan_id.include', true) ? '= ' : '<>';
+            $query->where('jc.plan_id ' . $type . (int) $planId);
+        }
+        elseif (is_array($planId))
+        {
+            $authorId = ArrayHelper::toInteger($planId);
+            $authorId = implode(',', $planId);
+            $query->where('jc.plan_id IN (' . $planId . ')');
         }
         
         // Filter by search in title.

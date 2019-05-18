@@ -29,8 +29,8 @@ class JVoterTableContest extends JTable
     public function __construct(&$db)
     {
         parent::__construct('#__jvoter_contests', 'id', $db);
-        
-        JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_jvoter.contest'));   
+                
+        ContentHistoryObserver::createObserver($this, array('typeAlias' => 'com_jvoter.contest'));
         
         // Set the alias since the column is called state
         $this->setColumnAlias('published', 'state');
@@ -107,6 +107,13 @@ class JVoterTableContest extends JTable
             $this->alias = \JFactory::getDate()->format('Y-m-d-H-i-s');
         }
         
+        if(!$this->plan_id)
+        {
+            $this->setError(\JText::_('COM_JVOTER_PLAN_REQUIRED'));
+            
+            return false;
+        }
+        
         /**
          * Ensure any new items have compulsory fields set. This is needed for things like
          * frontend editing where we don't show all the fields or using some kind of API
@@ -175,60 +182,51 @@ class JVoterTableContest extends JTable
     }
     
     /**
-     * Define a namespaced asset name for inclusion in the #__assets table
+     * Overrides Table::store to set modified data and user id.
      *
-     * @return string The asset name
-     *        
-     * @see JTable::_getAssetName
-     */
-    protected function _getAssetName()
-    {
-        $k = $this->_tbl_key;
-        
-        return 'com_jvoter.contest.' . (int) $this->$k;
-    }
-    
-    /**
-     * Method to get the parent asset id for the record
+     * @param   boolean  $updateNulls  True to update fields even if they are null.
      *
-     * @param   Table    $table  A Table object (optional) for the asset parent
-     * @param   integer  $id     The id (optional) of the content.
-     *
-     * @return  integer
+     * @return  boolean  True on success.
      *
      * @since   1.6
      * @deprecated  3.1.4 Class will be removed upon completion of transition to UCM
      */
-    protected function _getAssetParentId(JTable $table = null, $id = null)
+    public function store($updateNulls = false)
     {
-        $assetId = null;
+        $date = \JFactory::getDate();
+        $user = \JFactory::getUser();
         
-        // This is an article under a category.
-        if ($this->catid)
-        {
-            // Build the query to get the asset id for the parent category.
-            $query = $this->_db->getQuery(true)
-            ->select($this->_db->quoteName('asset_id'))
-            ->from($this->_db->quoteName('#__categories'))
-            ->where($this->_db->quoteName('id') . ' = ' . (int) $this->catid);
-            
-            // Get the asset id from the database.
-            $this->_db->setQuery($query);
-            
-            if ($result = $this->_db->loadResult())
-            {
-                $assetId = (int) $result;
-            }
-        }
+        $this->modified = $date->toSql();
         
-        // Return the asset id.
-        if ($assetId)
+        if ($this->id)
         {
-            return $assetId;
+            // Existing item
+            $this->modified_by = $user->get('id');
         }
         else
         {
-            return parent::_getAssetParentId($table, $id);
+            // New contest. An contest created and created_by field can be set by the user,
+            // so we don't touch either of these if they are set.
+            if (!(int) $this->created)
+            {
+                $this->created = $date->toSql();
+            }
+            
+            if (empty($this->created_by))
+            {
+                $this->created_by = $user->get('id');
+            }
         }
+        
+        $table = JTable::getInstance('Contest', 'JVoterTable');
+                
+        if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+        {
+            $this->setError(JText::_('COM_JVOTER_ERROR_CONTEST_UNIQUE_ALIAS'));
+            
+            return false;
+        }
+        
+        return parent::store($updateNulls);
     }
 }
