@@ -7,13 +7,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Application\ApplicationHelper;
 
 /**
- * Feature Table class
+ * Entry Table class
  *
  * @since 1.6
  */
-class JVoterTablePlan extends JTable
+class JVoterTableEntry extends JTable
 {
 
     /**
@@ -24,7 +25,7 @@ class JVoterTablePlan extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__jvoter_plans', 'id', $db);
+        parent::__construct('#__jvoter_entries', 'id', $db);
         
         // Set the alias since the column is called state
         $this->setColumnAlias('published', 'state');
@@ -46,18 +47,10 @@ class JVoterTablePlan extends JTable
      */
     public function bind($array, $ignore = '')
     {
-        if (isset($array['features']) && is_array($array['features']))
-        {
-            // only add features that are checked
-            $cid = JFactory::getApplication()->input->get('cid');
-            $features = array();
-            foreach($cid as $id)
-            {
-                $features[$id] = $array['features'][$id];
-            }
-            
-            $registry = new Registry($features);
-            $array['features'] = (string) $registry;
+        if (isset($array['images']) && is_array($array['images']))
+        {            
+            $registry = new Registry($array['images']);
+            $array['images'] = (string) $registry;
         }       
         
         return parent::bind($array, $ignore);
@@ -80,10 +73,31 @@ class JVoterTablePlan extends JTable
         // Check for valid name
         if(trim($this->title) == '')
         {
-            $this->setError(JText::_('COM_JVOTER_MUSTCONTAIN_A_TITLE_PLAN'));
+            $this->setError(JText::_('COM_JVOTER_MUSTCONTAIN_A_TITLE_ENTRY'));
             
             return false;
         }      
+        
+        if (trim($this->alias) == '')
+        {
+            $this->alias = $this->title;
+        }
+        
+        $this->alias = ApplicationHelper::stringURLSafe($this->alias);
+        
+        if (trim(str_replace('-', '', $this->alias)) == '')
+        {
+            $this->alias = \JFactory::getDate()->format('Y-m-d-H-i-s');
+        }
+        
+        if (!$this->id)
+        {
+            // Images can be an empty json string
+            if (!isset($this->images))
+            {
+                $this->images = '{}';
+            }
+        }
         
         $date = JFactory::getDate();
         $user = JFactory::getUser();

@@ -21,45 +21,23 @@
 			size="40"
 			required="true" 
 		/>
-		
+
 		<field 
-			name="type" 
-			type="list" 
-			label="COM_JVOTER_FIELD_TYPE_LABEL"
-			description="COM_JVOTER_FIELD_TYPE_DESC" 			
-			size="1" 
-			default="text"
-			required="true" 
-			>
-			<option value="boolean">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_BOOLEAN</option>
-			<option value="integer">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_INTEGER</option>
-			<option value="text">COM_JVOTER_FEATURE_FILTER_TYPE_OPT_TEXT</option>
-		</field>		
-		
-		<field
-			name="label"
-			type="text"
-			label="COM_JVOTER_FIELD_LABEL_LABEL"
-			description="COM_JVOTER_FIELD_LABEL_DESC"
-			size="40"
+			name="alias" 
+			type="text" 
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
+			size="40" 
 		/>
-		
-		<field
-			name="namekey"
-			type="text"
-			label="JFIELD_NAME_LABEL"
-			description="JFIELD_NAME_DESC"
-			hint="JFIELD_NAME_PLACEHOLDER"
-			size="45"
-		/>
-		
-		<field
-			name="value"
-			type="textarea"
-			label="COM_JVOTER_FIELD_DEFAULT_VALUE_LABEL"
-			description="COM_JVOTER_FIELD_DEFAULT_VALUE_DESC"
-			filter="raw"
+
+		<field 
+			name="description" 
+			type="editor"
+			label="COM_JVOTER_FIELD_ABOUTTEXT_LABEL" 
+			description="COM_JVOTER_FIELD_ABOUTTEXT_DESC"
+			filter="JComponentHelper::filterText"
+			buttons="true" 
 		/>
 
 		<field 
@@ -78,13 +56,13 @@
 			<option value="-2">JTRASHED</option>
 		</field>
 		
-		<field
-			name="description"
-			type="textarea"
-			label="JGLOBAL_DESCRIPTION"
-			description="COM_JVOTER_FEATURE_FIELD_DESCRIPTION_DESC"
-			size="40"
-			filter="HTML"
+		<field 
+			name="contest_id"
+			type="contest"
+			label="COM_JVOTER_FIELD_CONTEST_LABEL"
+			description="COM_JVOTER_FIELD_CONTEST_DESC"
+			required="true"
+			default=""
 		/>
 
 		<field

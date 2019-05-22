@@ -7,11 +7,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * View to edit an plan.
+ * View to edit an feature.
  *
  * @since  1.6
  */
-class JVoterViewPlan extends JViewLegacy
+class JVoterViewEntry extends JViewLegacy
 {
     /**
      * The JForm object
@@ -55,7 +55,7 @@ class JVoterViewPlan extends JViewLegacy
         $this->form  = $this->get('Form');
         $this->item  = $this->get('Item');
         $this->state = $this->get('State');
-        $this->canDo = JVoterHelper::getActions('plan', $this->item->id);
+        $this->canDo = JVoterHelper::getActions('entry', $this->item->id);
         
         // Check for errors.
         if (count($errors = $this->get('Errors')))
@@ -64,9 +64,6 @@ class JVoterViewPlan extends JViewLegacy
         }
                
         $this->addToolbar();
-        
-        JText::script('COM_JDONATE_SHOW_LESS');
-        JText::script('COM_JDONATE_SHOW_MORE');
         
         return parent::display($tpl);
     }
@@ -90,43 +87,43 @@ class JVoterViewPlan extends JViewLegacy
         $canDo = $this->canDo;
         
         JToolbarHelper::title(
-            JText::sprintf('COM_JVOTER_PAGE_' . ($checkedOut ? 'VIEW_ITEM' : ($isNew ? 'ADD_ITEM' : 'EDIT_ITEM')), JText::_('COM_JVOTER_PAGE_TITLE_PLAN')),
-            'archive plan-add'
+            JText::sprintf('COM_JVOTER_PAGE_' . ($checkedOut ? 'VIEW_ITEM' : ($isNew ? 'ADD_ITEM' : 'EDIT_ITEM')), JText::_('COM_JVOTER_PAGE_TITLE_ENTRY')),
+            'pencil-square-o entry-add'
             );
         
         // For new records, check the create permission.
         if ($isNew)
         {
-            JToolbarHelper::apply('plan.apply');
-            JToolbarHelper::save('plan.save');
-            JToolbarHelper::save2new('plan.save2new');
+            JToolbarHelper::apply('entry.apply');
+            JToolbarHelper::save('entry.save');
+            JToolbarHelper::save2new('entry.save2new');
         }
         
         // If not checked out, can save the item.
         elseif (!$checkedOut && ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)))
         {
-            JToolbarHelper::apply('plan.apply');
-            JToolbarHelper::save('plan.save');
+            JToolbarHelper::apply('entry.apply');
+            JToolbarHelper::save('entry.save');
             
             if ($canDo->get('core.create'))
             {
-                JToolbarHelper::save2new('plan.save2new');
+                JToolbarHelper::save2new('entry.save2new');
             }
         }
         
         // If an existing item, can save to a copy.
         if (!$isNew && $canDo->get('core.create'))
         {
-            JToolbarHelper::save2copy('plan.save2copy');
+            JToolbarHelper::save2copy('entry.save2copy');
         }
         
         if (empty($this->item->id))
         {
-            JToolbarHelper::cancel('plan.cancel');
+            JToolbarHelper::cancel('entry.cancel');
         }
         else
         {
-            JToolbarHelper::cancel('plan.cancel', 'JTOOLBAR_CLOSE');
+            JToolbarHelper::cancel('entry.cancel', 'JTOOLBAR_CLOSE');
         }
     }
 }

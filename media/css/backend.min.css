@@ -5,3 +5,7 @@
 .icon-thumbs-down:before {
 	color: #942a25;
 }
+
+.moreless {
+	cursor: pointer;
+}

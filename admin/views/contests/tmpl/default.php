@@ -148,7 +148,7 @@ if ($saveOrder)
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'contests.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								<?php echo JHtml::_('contestadministrator.featured', $item->featured, $i, $canChange); ?>
-								<?php echo JHtml::_('contestadministrator.moderated', $item->featured, $i, $canChange); ?>
+								<?php echo JHtml::_('contestadministrator.moderated', $item->moderated, $i, $canChange); ?>
 								<?php // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
@@ -237,7 +237,9 @@ if ($saveOrder)
 							</div>
 						</td>
 						<td class="small hidden-phone">
+							<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_jvoter&task=plan.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT') . ' ' . JText::_('COM_JVOTER_FIELD_PLAN_LABEL'); ?>">
 							<?php echo $this->escape($item->plan_title); ?>
+							</a>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $this->escape($item->access_level); ?>

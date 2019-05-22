@@ -37,6 +37,9 @@ class JVoterModelEntries extends JModelList
 		        'checked_out_time', 'e.checked_out_time',		      
 		        'state', 'e.state',	
 		        'status', 'e.status',
+		        'contest_id', 'e.contest_id', 'contest_title',
+		        'moderated', 'e.moderated',
+		        'vote', 'e.vote',
 		        'created', 'e.created',
 		        'modified', 'e.modified',
 		        'created_by', 'e.created_by',		      
@@ -145,7 +148,7 @@ class JVoterModelEntries extends JModelList
 		    $this->getState(
 		        'list.select',
 		        'DISTINCT e.id, e.title, e.alias, e.contest_id, e.checked_out, e.checked_out_time' .
-		        ', e.state, e.status, e.created, e.created_by, e.modified, e.ordering'		       
+		        ', e.state, e.status, e.moderated, e.vote, e.created, e.created_by, e.modified, e.ordering'		       
 		    )
 		);
 		$query->from('#__jvoter_entries AS e');	

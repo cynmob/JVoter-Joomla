@@ -419,6 +419,92 @@ class JVoterModelContest extends JModelAdmin
     }
     
     /**
+     * Method to toggle the featured setting of contests.
+     *
+     * @param   array    $pks    The ids of the items to toggle.
+     * @param   integer  $value  The value to toggle to.
+     *
+     * @return  boolean  True on success.
+     */
+    public function featured($pks, $value = 0)
+    {
+        // Sanitize the ids.
+        $pks = (array) $pks;
+        $pks = ArrayHelper::toInteger($pks);
+        
+        if (empty($pks))
+        {
+            $this->setError(JText::_('COM_JVOTER_NO_ITEM_SELECTED'));
+            
+            return false;
+        }
+        
+        try
+        {
+            $db = $this->getDbo();
+            $query = $db->getQuery(true)
+            ->update($db->quoteName('#__jvoter_contests'))
+            ->set('featured = ' . (int) $value)
+            ->where('id IN (' . implode(',', $pks) . ')');
+            $db->setQuery($query);
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            $this->setError($e->getMessage());
+            
+            return false;
+        }
+        
+        $this->cleanCache();
+        
+        return true;
+    }
+    
+    /**
+     * Method to toggle the moderated setting of contests.
+     *
+     * @param   array    $pks    The ids of the items to toggle.
+     * @param   integer  $value  The value to toggle to.
+     *
+     * @return  boolean  True on success.
+     */
+    public function moderated($pks, $value = 0)
+    {
+        // Sanitize the ids.
+        $pks = (array) $pks;
+        $pks = ArrayHelper::toInteger($pks);
+        
+        if (empty($pks))
+        {
+            $this->setError(JText::_('COM_JVOTER_NO_ITEM_SELECTED'));
+            
+            return false;
+        }
+        
+        try
+        {
+            $db = $this->getDbo();
+            $query = $db->getQuery(true)
+            ->update($db->quoteName('#__jvoter_contests'))
+            ->set('moderated = ' . (int) $value)
+            ->where('id IN (' . implode(',', $pks) . ')');
+            $db->setQuery($query);
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            $this->setError($e->getMessage());
+            
+            return false;
+        }
+        
+        $this->cleanCache();
+        
+        return true;
+    }
+    
+    /**
      * A protected method to get a set of ordering conditions.
      *
      * @param   object  $table  A record object.
@@ -466,14 +552,7 @@ class JVoterModelContest extends JModelAdmin
     protected function cleanCache($group = null, $client_id = 0)
     {
         parent::cleanCache('com_jvoter');
-        // TODO: do clean cache to the other modules
-        
-        //parent::cleanCache('mod_articles_archive');
-        //parent::cleanCache('mod_articles_categories');
-        //parent::cleanCache('mod_articles_category');
-        //parent::cleanCache('mod_articles_latest');
-        //parent::cleanCache('mod_articles_news');
-        
+        // TODO: do clean cache to the other modules        
     }
     
     /**

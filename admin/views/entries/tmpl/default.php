@@ -53,16 +53,16 @@ if ($saveOrder)
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						<th width="1%" class="nowrap center">
-							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'f.state', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'e.state', $listDirn, $listOrder); ?>
 						</th>
 						<th style="min-width:100px" class="nowrap">
-							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'f.label', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'e.title', $listDirn, $listOrder); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('searchtools.sort', 'COM_JVOTER_FIELD_TYPE_LABEL', 'f.type', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'COM_JVOTER_FIELD_TYPE_LABEL', 'e.vote', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'f.id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'e.id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>
@@ -101,10 +101,11 @@ if ($saveOrder)
 						<td class="center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'entries.', $canChange, 'cb'); ?>
+								<?php echo JHtml::_('contestadministrator.moderated', $item->moderated, $i, $canChange); ?>
 								<?php // Create dropdown items and render the dropdown list. ?>
 								<?php if ($canChange) : ?>
-									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'features'); ?>
-									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'features'); ?>
+									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'entries'); ?>
+									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'entries'); ?>
 									<?php echo JHtml::_('actionsdropdown.render', $this->escape($item->title)); ?>
 								<?php endif; ?>
 							</div>
@@ -112,25 +113,18 @@ if ($saveOrder)
 						<td>
 							<div class="pull-left break-word">
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'features.', $canCheckin); ?>
+									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'entries.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($canEdit || $canEditOwn) : ?>
-									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_jvoter&task=feature.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_jvoter&task=entry.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 										<?php echo $this->escape($item->title); ?></a>
 								<?php else : ?>
 									<?php echo $this->escape($item->title); ?>
 								<?php endif; ?>
-								<span class="small break-word">
-									<?php if (empty($item->note)) : ?>
-										<?php echo JText::sprintf('JGLOBAL_LIST_NAME', $this->escape($item->namekey)); ?>
-									<?php else : ?>
-										<?php echo JText::sprintf('JGLOBAL_LIST_NAME_NOTE', $this->escape($item->namekey), $this->escape($item->note)); ?>
-									<?php endif; ?>
-								</span>
 							</div>
 						</td>
 						<td class="small">
-							<?php echo $this->escape($item->type); ?>
+							<?php echo $this->escape($item->vote); ?>
 						</td>
 						<td class="center hidden-phone">
 							<span><?php echo (int) $item->id; ?></span>

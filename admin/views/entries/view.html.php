@@ -102,7 +102,7 @@ class JVoterViewEntries extends JViewLegacy
         // Get the toolbar object instance
         $bar = JToolbar::getInstance('toolbar');
         
-        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_ENTRIES'), 'puzzle-piece entry');
+        JToolbarHelper::title(JText::_('COM_JVOTER_TITLE_ENTRIES'), 'tasks entry');
         
         if ($canDo->get('core.create'))
         {
@@ -153,8 +153,7 @@ class JVoterViewEntries extends JViewLegacy
         return array(
             'e.ordering' => JText::_('JGRID_HEADING_ORDERING'),
             'e.state'    => JText::_('JSTATUS'),
-            'e.title'    => JText::_('JGLOBAL_TITLE'),
-            'e.type'     => JText::_('COM_JVOTER_FIELD_TYPE_LABEL'),               
+            'e.title'    => JText::_('JGLOBAL_TITLE'),                      
             'e.id'       => JText::_('JGRID_HEADING_ID'),
         );
     }

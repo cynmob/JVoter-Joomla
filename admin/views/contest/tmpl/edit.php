@@ -36,7 +36,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		if (task == "contest.cancel" || document.formvalidator.isValid(document.getElementById("item-form")))
 		{
 			jQuery("#permissions-sliders select").attr("disabled", "disabled");
-			' . $this->form->getField('abouttext')->save() . '
+			' . $this->form->getField('description')->save() . '
 			Joomla.submitform(task, document.getElementById("item-form"));
     
 			// @deprecated 4.0  The following js is not needed since 3.7.0.
@@ -59,13 +59,13 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
 	<div class="form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'contest')); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JVOTER_VIEW_FIELD_FIELDSET_GENERAL')); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'contest', JText::_('COM_JVOTER_PAGE_TITLE_CONTEST')); ?>
 		<div class="row-fluid">
 			<div class="span9">
-				<fieldset class="form-vertical">
-					<?php echo $this->form->renderField('abouttext'); ?>
+				<fieldset class="adminform">					
+					<?php echo $this->form->getInput('description'); ?>
 				</fieldset>
 			</div>
 			<div class="span3">				

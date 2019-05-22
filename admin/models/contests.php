@@ -44,6 +44,7 @@ class JVoterModelContests extends JModelList
 		        'created_by', 'jc.created_by',
 		        'created_by_alias', 'jc.created_by_alias',
 		        'ordering', 'jc.ordering',
+		        'moderated', 'jc.moderated',
 		        'featured', 'jc.featured',		       
 		        'hits', 'jc.hits',
 		        'publish_up', 'jc.publish_up',
@@ -167,7 +168,7 @@ class JVoterModelContests extends JModelList
 		$query->select(
 		    $this->getState(
 		        'list.select',
-		        'DISTINCT jc.id, jc.title, jc.alias, jc.checked_out, jc.checked_out_time, jc.catid' .
+		        'DISTINCT jc.id, jc.title, jc.alias, jc.checked_out, jc.checked_out_time, jc.catid, jc.moderated' .
 		        ', jc.state, jc.access, jc.created, jc.created_by, jc.created_by_alias, jc.modified, jc.ordering, jc.featured, jc.hits' .
 		        ', jc.publish_up, jc.publish_down'
 		    )

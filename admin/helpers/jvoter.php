@@ -18,13 +18,13 @@ use Joomla\CMS\Log\Log;
  */
 abstract class JVoterHelper
 {
-
+    
     /**
      * Configure the Linkbar.
      *
      * @param string $vName
      *            string
-     *            
+     *
      * @return void
      */
     public static function addSubmenu($vName = '')
@@ -49,7 +49,7 @@ abstract class JVoterHelper
      * @since   3.2
      */
     public static function getActions($section = '', $id = 0)
-    {                
+    {
         $assetName = 'com_jvoter';
         
         if ($section && $id)
@@ -81,12 +81,12 @@ abstract class JVoterHelper
         
         return $result;
     }
-   
+    
     /**
      * Format amount
-     * 
+     *
      * @params string   - the amount/price to be formatted
-     * 
+     *
      * @return string
      */
     public static function formatAmount($amount)
@@ -110,7 +110,7 @@ abstract class JVoterHelper
         
         return $amount;
     }
-
+    
     /**
      * Only returns plugins that have a specific event
      *
@@ -135,7 +135,7 @@ abstract class JVoterHelper
         }
         return $return;
     }
-
+    
     /**
      * Returns Array of active Plugins
      *
@@ -149,15 +149,15 @@ abstract class JVoterHelper
     {
         $db = \JFactory::getDBO();
         $query = $db->getQuery(true)
-            ->from($db->qn('#__extensions'))
-            ->where($db->qn('enabled') . ' = ' . $db->q('1'))
-            ->where(LOWER($db->qn('folder')) . ' = ' . $db->q(strtolower($folder)));
+        ->from($db->qn('#__extensions'))
+        ->where($db->qn('enabled') . ' = ' . $db->q('1'))
+        ->where(LOWER($db->qn('folder')) . ' = ' . $db->q(strtolower($folder)));
         $db->setQuery($query);
         
         $db->setQuery($query);
         return $db->loadObjectList();
     }
-
+    
     /**
      * Checks if a plugin has an event
      *
@@ -192,7 +192,7 @@ abstract class JVoterHelper
         
         return $success;
     }
-
+    
     /**
      * Gets a list of payment plugins and their titles
      *
@@ -233,5 +233,71 @@ abstract class JVoterHelper
         
         return $return; // name, title
     }
+    
+    /**
+     * Truncate string
+     *
+     * @param string    $text
+     * @param int       $length
+     * @param string    $suffix
+     * @return string
+     */
+    public function truncateString( $text, $length = '200', $suffix = 'Show more' )
+    {
+        if ( empty( $text ) )
+        {
+            return $text;
+        }
+        
+        $allowed_tags = "";
+        
+        $text = self::stripArgumentFromTags( $text );
+        $text = strip_tags( $text, $allowed_tags );
+        $strlen = strlen( $text );
+        
+        if ( $length >= $strlen )
+        {
+            $length = $strlen;
+        }
+        
+        $int = strpos( $text, ' ', $length );
+        
+        if ( $int < $length )
+        {
+            $int = $length;
+        }
+        
+        $hideText = substr( $text, $int);
+        $text = substr( $text, 0, $int );
+        
+        if ( !empty( $text ) && ($strlen > $int) )
+        {
+            $text .= '<span class="hidden-truncate" style="display: none;">';
+            $text .= $hideText;
+            $text .= '</span>';
+            $text .= ' ' . $suffix;
+        }
+        
+        return $text;
+    }
+    
+    /**
+     * Strip arguments from tags
+     *
+     * @param string $htmlString
+     * @return string
+     */
+    public function stripArgumentFromTags( $htmlString )
+    {
+        $regEx = '/([^<]*<\s*[a-z](?:[0-9]|[a-z]{0,9}))(?:(?:\s*[a-z\-]{2,14}\s*=\s*(?:"[^"]*"|\'[^\']*\'))*)(\s*\/?>[^<]*)/i';
+        // match any start tag
+        $chunks = preg_split( $regEx, $htmlString, -1, PREG_SPLIT_DELIM_CAPTURE );
+        $chunkCount = count( $chunks );
+        $strippedString = '';
+        for ( $n = 0; $n < $chunkCount; $n++ )
+        {
+            $strippedString .= $chunks[$n];
+        }
+        return $strippedString;
+    }
 }
-

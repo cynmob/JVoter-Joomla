@@ -141,10 +141,10 @@ class JVoterViewContests extends JViewLegacy
             //JToolbarHelper::unpublish('contests.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             
             // Add an approve button.
-            $bar->appendButton('Standard', 'thumbs-up', 'COM_JVOTER_TOOLBAR_APPROVE', 'contests.publish', true);
+            $bar->appendButton('Standard', 'thumbs-up', 'COM_JVOTER_TOOLBAR_APPROVE', 'contests.approved', true);
             
             // Add a disapprove button.
-            $bar->appendButton('Standard', 'thumbs-down', 'COM_JVOTER_TOOLBAR_DISAPPROVE', 'contests.unpublish', true);                        
+            $bar->appendButton('Standard', 'thumbs-down', 'COM_JVOTER_TOOLBAR_DISAPPROVE', 'contests.disapproved', true);                        
                         
             JToolbarHelper::custom('contests.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
             JToolbarHelper::custom('contests.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);

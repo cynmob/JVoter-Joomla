@@ -26,7 +26,6 @@ JFactory::getDocument()->addScriptDeclaration('
 		}
 	};
 ');
-
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_jvoter&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">

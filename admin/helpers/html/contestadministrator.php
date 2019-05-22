@@ -67,8 +67,8 @@ abstract class JHtmlContestAdministrator
 	    
 	    // Array of image, task, title, action
 	    $states = array(
-	        0 => array('thumbs-down', 'contests.approve', 'COM_JVOTER_UNFEATURED', 'JGLOBAL_TOGGLE_FEATURED'),
-	        1 => array('thumbs-up', 'contests.disapprove', 'COM_JVOTER_FEATURED', 'JGLOBAL_TOGGLE_FEATURED'),
+	        0 => array('thumbs-down', 'contests.approved', 'COM_JVOTER_DISAPPROVED', 'COM_JDONATE_TOGGLE_MODERATED'),
+	        1 => array('thumbs-up', 'contests.disapproved', 'COM_JVOTER_APPROVED', 'COM_JDONATE_TOGGLE_MODERATED'),
 	    );
 	    $state = ArrayHelper::getValue($states, (int) $value, $states[1]);
 	    $icon  = $state[0];

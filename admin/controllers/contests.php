@@ -19,6 +19,138 @@ class JVoterControllerContests extends JControllerAdmin
 {
 
     /**
+     * Constructor.
+     *
+     * @param   array  $config  An optional associative array of configuration settings.
+     *
+     * @see     JControllerLegacy
+     * @since   1.6
+     */
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+      
+        $this->registerTask('unfeatured', 'featured');
+        $this->registerTask('disapproved', 'approved');
+    }
+    
+    /**
+     * Method to toggle the featured setting of a list of contests.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    public function featured()
+    {
+        // Check for request forgeries
+        $this->checkToken();
+        
+        $user   = JFactory::getUser();
+        $ids    = $this->input->get('cid', array(), 'array');
+        $values = array('featured' => 1, 'unfeatured' => 0);
+        $task   = $this->getTask();
+        $value  = ArrayHelper::getValue($values, $task, 0, 'int');
+        
+        // Access checks.
+        foreach ($ids as $i => $id)
+        {
+            if (!$user->authorise('core.edit.state', 'com_jvoter.contest.' . (int) $id))
+            {
+                // Prune items that you can't change.
+                unset($ids[$i]);              
+                $this->app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'error');               
+            }
+        }
+        
+        if (empty($ids))
+        {           
+            \JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+        }
+        else
+        {
+            // Get the model.
+            /** @var JVoterModelContests $model */
+            $model = $this->getModel();
+            
+            // Publish the items.
+            if (!$model->featured($ids, $value))
+            {              
+                $this->setMessage($model->getError(), 'error');
+            }
+            
+            if ($value == 1)
+            {
+                $message = JText::plural('COM_JVOTER_N_ITEMS_FEATURED', count($ids));
+            }
+            else
+            {
+                $message = JText::plural('COM_JVOTER_N_ITEMS_UNFEATURED', count($ids));
+            }
+        }
+        
+        $this->setRedirect(JRoute::_('index.php?option=com_jvoter&view=contests', false), $message);
+    }
+    
+    /**
+     * Method to toggle the featured setting of a list of articles.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    public function approved()
+    {
+        // Check for request forgeries
+        $this->checkToken();
+        
+        $user   = JFactory::getUser();
+        $ids    = $this->input->get('cid', array(), 'array');
+        $values = array('approved' => 1, 'disapproved' => 0);
+        $task   = $this->getTask();
+        $value  = ArrayHelper::getValue($values, $task, 0, 'int');
+        
+        // Access checks.
+        foreach ($ids as $i => $id)
+        {
+            if (!$user->authorise('core.edit.state', 'com_jvoter.contest.' . (int) $id))
+            {
+                // Prune items that you can't change.
+                unset($ids[$i]);
+                $this->app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'error');
+            }
+        }
+        
+        if (empty($ids))
+        {
+            \JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+        }
+        else
+        {
+            // Get the model.
+            /** @var JVoterModelContest $model */
+            $model = $this->getModel();
+            
+            // Publish the items.
+            if (!$model->moderated($ids, $value))
+            {
+                $this->setMessage($model->getError(), 'error');
+            }
+            
+            if ($value == 1)
+            {
+                $message = JText::plural('COM_JVOTER_N_ITEMS_APPROVE', count($ids));
+            }
+            else
+            {
+                $message = JText::plural('COM_JVOTER_N_ITEMS_DISAPPROVE', count($ids));
+            }
+        }
+        
+        $this->setRedirect(JRoute::_('index.php?option=com_jvoter&view=contests', false), $message);
+    }
+    
+    /**
 	 * Method to publish a list of items
 	 *
 	 * @return  void

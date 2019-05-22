@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.form.formfield');
 
-class JFormFieldPlan extends JFormField
+class JFormFieldContest extends JFormField
 {
 
     /**
@@ -17,7 +17,7 @@ class JFormFieldPlan extends JFormField
      * @var string
      * @since 1.6
      */
-    protected $type = 'plan';
+    protected $type = 'contest';
 
     /**
      * Method to get the field input markup.
@@ -49,25 +49,25 @@ class JFormFieldPlan extends JFormField
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select('*')
-            ->from('#__jvoter_plans')
+            ->from('#__jvoter_contests')
             ->where('state = 1');
         
         $db->setQuery($query);
         
-        $plans = $db->loadObjectList();
+        $contests = $db->loadObjectList();
             
         $options = array();
         
         if(! $this->multiple)
         {
-            $options[] = JHtml::_('select.option', "", JText::_('COM_JVOTER_SELECT_PLAN_OPT_LABEL'));
+            $options[] = JHtml::_('select.option', "", JText::_('COM_JVOTER_SELECT_CONTEST_OPT_LABEL'));
         }
         
-        if(is_array($plans))
+        if(is_array($contests))
         {
-            foreach($plans as $plan)
+            foreach($contests as $contest)
             {                                              
-                $options[] = JHtml::_('select.option', $plan->id, $plan->title . ' ('.JVoterHelper::formatAmount($plan->price).')');
+                $options[] = JHtml::_('select.option', $contest->id, $contest->title);
             }
         }
        

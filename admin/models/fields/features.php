@@ -6,6 +6,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Registry\Registry;
+
 jimport('joomla.form.formfield');
 
 class JFormFieldFeatures extends JFormField
@@ -27,20 +29,26 @@ class JFormFieldFeatures extends JFormField
      * @since 1.6
      */
     protected function getInput()
-    {                       
-        if (!empty($this->value) && !($this->value instanceof Registry))
-        {
-            $registry = new Registry($this->value);
-            $this->value = $registry;
-        }
-       
+    {                     
+        $displayData = array();
         $db = JFactory::getDBO();
+        
         $query = $db->getQuery(true);
         $query->select('*')
         ->from('#__jvoter_features')
         ->where('state = 1');
         $db->setQuery($query);
-        $displayData = $db->loadObjectList();
+        $displayData['features'] = $db->loadObjectList();                
+        
+        if (!empty($this->value) && !($this->value instanceof Registry))
+        {
+            $registry = new Registry($this->value);
+            $this->value = $registry;
+            
+            //process $displayData
+        }
+        
+        $displayData['view'] = $this;
               
         return JLayoutHelper::render('jvoter.form.field.features', $displayData);
     }

@@ -32,7 +32,7 @@
 		/>
 
 		<field 
-			name="abouttext" 
+			name="description" 
 			type="editor"
 			label="COM_JVOTER_FIELD_ABOUTTEXT_LABEL" 
 			description="COM_JVOTER_FIELD_ABOUTTEXT_DESC"
@@ -212,7 +212,7 @@
 			name="featured" 
 			type="radio"
 			label="JFEATURED"
-			description="COM_CONTENT_FIELD_FEATURED_DESC"
+			description="COM_JDONATE_FIELD_FEATURED_DESC"
 			class="btn-group btn-group-yesno"
 			default="0"
 			>
@@ -223,8 +223,8 @@
 		<field 
 			name="moderated" 
 			type="radio"
-			label="JFEATURED"
-			description="COM_CONTENT_FIELD_FEATURED_DESC"
+			label="COM_JDONATE_FIELD_MODERATED_LABEL"
+			description="COM_JDONATE_FIELD_MODERATED_DESC"
 			class="btn-group btn-group-yesno"
 			default="0"
 			>
